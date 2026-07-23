@@ -148,13 +148,22 @@
     max-width: 440px;
     height: 3px;
     background: var(--rule);
-    margin-bottom: 26px;
+    margin-bottom: 6px;
   }
   .progress-fill {
     height: 100%;
     background: var(--copper);
     width: 0%;
     transition: width 0.35s ease;
+  }
+  .speak-status {
+    width: 100%;
+    max-width: 440px;
+    min-height: 1.2em;
+    margin-bottom: 20px;
+    font-size: 0.72rem;
+    color: var(--clay);
+    text-align: center;
   }
 
   .scene {
@@ -349,6 +358,7 @@
   <span>Known <strong id="statMastered">0</strong> / 50</span>
 </div>
 <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+<div class="speak-status" id="speakStatus" aria-live="polite"></div>
 
 <div class="scene" id="scene">
   <button class="pronounce-btn" id="btnSpeak" type="button" aria-label="Pronounce the Bosnian word">🔊</button>
@@ -515,18 +525,44 @@ function pickVoice() {
   return null;
 }
 
+function showSpeakStatus(msg) {
+  const el = document.getElementById("speakStatus");
+  el.textContent = msg;
+  clearTimeout(showSpeakStatus._t);
+  showSpeakStatus._t = setTimeout(() => { el.textContent = ""; }, 4000);
+}
+
 function speakWord() {
+  refreshVoices(); // some browsers only populate this lazily
   const w = currentWordObj();
   window.speechSynthesis.cancel();
   const utter = new SpeechSynthesisUtterance(w.bs);
   const voice = pickVoice();
-  utter.voice = voice || null;
-  utter.lang = voice ? voice.lang : "bs-BA";
+  // Only set voice/lang when we actually found a matching installed voice.
+  // Forcing an uninstalled lang tag (e.g. "bs-BA") makes many Android TTS
+  // engines fail silently instead of falling back to a default voice.
+  if (voice) {
+    utter.voice = voice;
+    utter.lang = voice.lang;
+  }
   utter.rate = 0.85;
-  utter.onstart = () => btnSpeak.classList.add("speaking");
+  let started = false;
+  utter.onstart = () => { started = true; btnSpeak.classList.add("speaking"); };
   utter.onend = () => btnSpeak.classList.remove("speaking");
-  utter.onerror = () => btnSpeak.classList.remove("speaking");
+  utter.onerror = () => {
+    btnSpeak.classList.remove("speaking");
+    showSpeakStatus("Couldn't play audio on this device.");
+  };
   window.speechSynthesis.speak(utter);
+  setTimeout(() => {
+    if (!started) {
+      showSpeakStatus(
+        voices.length === 0
+          ? "No text-to-speech voices found on this device."
+          : "No audio played — try installing a Croatian or Serbian voice in your device's text-to-speech settings."
+      );
+    }
+  }, 1200);
 }
 
 if ("speechSynthesis" in window) {
