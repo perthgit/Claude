@@ -158,9 +158,42 @@
   }
 
   .scene {
+    position: relative;
     width: 100%;
     max-width: 440px;
     perspective: 1400px;
+  }
+  .pronounce-btn {
+    position: absolute;
+    top: -16px;
+    right: 24px;
+    z-index: 2;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid var(--rule);
+    background: var(--card);
+    color: var(--copper);
+    font-size: 1.05rem;
+    line-height: 1;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 10px var(--shadow);
+  }
+  .pronounce-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+  .pronounce-btn.speaking {
+    background: var(--copper);
+    color: var(--card);
+    animation: pronounce-pulse 0.6s ease-in-out infinite alternate;
+  }
+  @keyframes pronounce-pulse {
+    from { transform: scale(1); }
+    to { transform: scale(1.1); }
   }
   .card {
     position: relative;
@@ -318,6 +351,7 @@
 <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
 
 <div class="scene" id="scene">
+  <button class="pronounce-btn" id="btnSpeak" type="button" aria-label="Pronounce the Bosnian word">🔊</button>
   <div class="card" id="card" tabindex="0" role="button" aria-pressed="false" aria-label="Flashcard, press to flip">
     <div class="face front">
       <div class="face-head">
@@ -363,7 +397,7 @@
   <button id="btnRestart">Reset progress</button>
 </div>
 
-<footer>space flip · ← → navigate · k know · a study again</footer>
+<footer>space flip · ← → navigate · p pronounce · k know · a study again</footer>
 
 <script>
 const WORDS = [
@@ -461,6 +495,48 @@ function toggleTheme() {
   const next = current === "dark" ? "light" : "dark";
   document.documentElement.setAttribute("data-theme", next);
   localStorage.setItem(THEME_KEY, next);
+}
+
+const btnSpeak = document.getElementById("btnSpeak");
+let voices = [];
+
+function refreshVoices() {
+  voices = ("speechSynthesis" in window) ? window.speechSynthesis.getVoices() : [];
+}
+
+function pickVoice() {
+  // Bosnian TTS voices are rare; Croatian and Serbian are phonetically
+  // close enough to be intelligible, so fall back through them.
+  const prefs = ["bs", "hr", "sr"];
+  for (const p of prefs) {
+    const match = voices.find((v) => v.lang && v.lang.toLowerCase().startsWith(p));
+    if (match) return match;
+  }
+  return null;
+}
+
+function speakWord() {
+  const w = currentWordObj();
+  window.speechSynthesis.cancel();
+  const utter = new SpeechSynthesisUtterance(w.bs);
+  const voice = pickVoice();
+  utter.voice = voice || null;
+  utter.lang = voice ? voice.lang : "bs-BA";
+  utter.rate = 0.85;
+  utter.onstart = () => btnSpeak.classList.add("speaking");
+  utter.onend = () => btnSpeak.classList.remove("speaking");
+  utter.onerror = () => btnSpeak.classList.remove("speaking");
+  window.speechSynthesis.speak(utter);
+}
+
+if ("speechSynthesis" in window) {
+  refreshVoices();
+  window.speechSynthesis.onvoiceschanged = refreshVoices;
+  btnSpeak.addEventListener("click", speakWord);
+} else {
+  btnSpeak.disabled = true;
+  btnSpeak.textContent = "🔇";
+  btnSpeak.setAttribute("aria-label", "Pronunciation not supported in this browser");
 }
 
 const card = document.getElementById("card");
@@ -583,6 +659,7 @@ document.addEventListener("keydown", (e) => {
   else if (e.code === "ArrowLeft") goPrev();
   else if (e.code === "KeyK") markKnown();
   else if (e.code === "KeyA") markAgain();
+  else if (e.code === "KeyP" && "speechSynthesis" in window) speakWord();
 });
 
 loadTheme();
