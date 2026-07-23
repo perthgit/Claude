@@ -4,237 +4,344 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Bosnian Flashcards — Top 50 Words</title>
+<meta name="description" content="A dictionary-card style flashcard app for learning the 50 most common Bosnian words.">
 <style>
   :root {
-    --bg: #f4f1ea;
-    --card-bg: #ffffff;
-    --text: #26241f;
-    --muted: #726f66;
-    --accent: #1f6f5c;
-    --accent-2: #c14e3d;
-    --border: #e2ddcf;
-    --shadow: rgba(38, 36, 31, 0.12);
+    --ink: #16262a;
+    --stone: #e9e3d3;
+    --stone-dim: #d9d1bc;
+    --card: #f3efe3;
+    --copper: #b8672f;
+    --copper-bright: #d98a4c;
+    --petrol: #1f5c58;
+    --clay: #a34638;
+    --text: #1c2a2c;
+    --muted: #5c6b64;
+    --rule: #c9c0a5;
+    --shadow: rgba(22, 38, 42, 0.16);
   }
   @media (prefers-color-scheme: dark) {
     :root {
-      --bg: #1b1a17;
-      --card-bg: #26241f;
-      --text: #f1eee5;
-      --muted: #a8a294;
-      --accent: #4fb89b;
-      --accent-2: #e08268;
-      --border: #3a3730;
-      --shadow: rgba(0, 0, 0, 0.4);
+      --ink: #0f1a1c;
+      --stone: #16262a;
+      --stone-dim: #1b2d30;
+      --card: #1c2f31;
+      --copper: #d98a4c;
+      --copper-bright: #f0a565;
+      --petrol: #4fa39c;
+      --clay: #c96a58;
+      --text: #ece5d3;
+      --muted: #96a39c;
+      --rule: #3a4c4c;
+      --shadow: rgba(0, 0, 0, 0.45);
     }
   }
+  :root[data-theme="dark"] {
+    --ink: #0f1a1c;
+    --stone: #16262a;
+    --stone-dim: #1b2d30;
+    --card: #1c2f31;
+    --copper: #d98a4c;
+    --copper-bright: #f0a565;
+    --petrol: #4fa39c;
+    --clay: #c96a58;
+    --text: #ece5d3;
+    --muted: #96a39c;
+    --rule: #3a4c4c;
+    --shadow: rgba(0, 0, 0, 0.45);
+  }
+  :root[data-theme="light"] {
+    --ink: #16262a;
+    --stone: #e9e3d3;
+    --stone-dim: #d9d1bc;
+    --card: #f3efe3;
+    --copper: #b8672f;
+    --copper-bright: #d98a4c;
+    --petrol: #1f5c58;
+    --clay: #a34638;
+    --text: #1c2a2c;
+    --muted: #5c6b64;
+    --rule: #c9c0a5;
+    --shadow: rgba(22, 38, 42, 0.16);
+  }
   * { box-sizing: border-box; }
+  html { color-scheme: light dark; }
   body {
     margin: 0;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    background: var(--bg);
+    background: var(--stone);
+    background-image:
+      linear-gradient(var(--rule) 1px, transparent 1px);
+    background-size: 100% 2rem;
+    background-position: 0 8.4rem;
     color: var(--text);
     min-height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 24px 16px 48px;
+    padding: 28px 16px 56px;
   }
-  header {
-    text-align: center;
-    margin-bottom: 20px;
-    max-width: 480px;
+  @media (prefers-reduced-motion: reduce) {
+    * { transition-duration: 0.001ms !important; animation-duration: 0.001ms !important; }
   }
-  h1 {
-    font-size: 1.5rem;
-    margin: 0 0 4px;
+
+  .masthead {
+    width: 100%;
+    max-width: 440px;
+    text-align: left;
+    margin-bottom: 22px;
+    border-bottom: 2px solid var(--ink);
+    padding-bottom: 12px;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
   }
-  header p {
+  .masthead h1 {
+    font-family: Iowan Old Style, Palatino Linotype, Georgia, "Times New Roman", serif;
+    font-size: 1.7rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
     margin: 0;
-    color: var(--muted);
-    font-size: 0.9rem;
+    color: var(--ink);
+    text-wrap: balance;
   }
+  .masthead .catalog {
+    font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+    font-size: 0.72rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    white-space: nowrap;
+  }
+  .theme-toggle {
+    position: fixed;
+    top: 16px;
+    right: 16px;
+    font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    background: var(--card);
+    border: 1px solid var(--rule);
+    color: var(--muted);
+    padding: 6px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
   .stats {
     display: flex;
     justify-content: space-between;
+    align-items: baseline;
     width: 100%;
-    max-width: 420px;
-    margin: 0 auto 12px;
-    font-size: 0.85rem;
+    max-width: 440px;
+    margin: 0 auto 10px;
+    font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+    font-size: 0.78rem;
     color: var(--muted);
+    font-variant-numeric: tabular-nums;
   }
-  .progress-bar {
+  .stats strong { color: var(--text); }
+  .progress-track {
     width: 100%;
-    max-width: 420px;
-    height: 6px;
-    background: var(--border);
-    border-radius: 4px;
-    overflow: hidden;
-    margin-bottom: 24px;
+    max-width: 440px;
+    height: 3px;
+    background: var(--rule);
+    margin-bottom: 26px;
   }
   .progress-fill {
     height: 100%;
-    background: var(--accent);
+    background: var(--copper);
     width: 0%;
-    transition: width 0.3s ease;
+    transition: width 0.35s ease;
   }
+
   .scene {
     width: 100%;
-    max-width: 420px;
-    perspective: 1200px;
+    max-width: 440px;
+    perspective: 1400px;
   }
   .card {
     position: relative;
     width: 100%;
-    height: 260px;
+    height: 300px;
     cursor: pointer;
     transform-style: preserve-3d;
     transition: transform 0.5s cubic-bezier(.4,.2,.2,1);
   }
-  .card.flipped {
-    transform: rotateY(180deg);
-  }
+  .card:focus-visible { outline: 3px solid var(--copper); outline-offset: 4px; }
+  .card.flipped { transform: rotateY(180deg); }
+
   .face {
     position: absolute;
     inset: 0;
     backface-visibility: hidden;
-    border-radius: 18px;
-    background: var(--card-bg);
-    box-shadow: 0 8px 24px var(--shadow);
-    border: 1px solid var(--border);
+    background: var(--card);
+    box-shadow: 0 10px 28px var(--shadow);
+    border: 1px solid var(--rule);
+    border-top: 3px solid var(--copper);
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 24px;
-    text-align: center;
+    padding: 22px 26px 26px;
   }
   .face.back {
     transform: rotateY(180deg);
+    border-top-color: var(--petrol);
   }
-  .label {
-    position: absolute;
-    top: 14px;
-    left: 18px;
-    font-size: 0.7rem;
+
+  .face-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+    font-size: 0.68rem;
     text-transform: uppercase;
     letter-spacing: 0.08em;
     color: var(--muted);
   }
+  .card-index { font-variant-numeric: tabular-nums; }
+
+  .face-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 14px;
+  }
   .word {
-    font-size: 2rem;
+    font-family: Iowan Old Style, Palatino Linotype, Georgia, "Times New Roman", serif;
+    font-size: clamp(2.1rem, 8vw, 2.7rem);
     font-weight: 700;
+    line-height: 1.05;
+    color: var(--ink);
+    text-wrap: balance;
   }
-  .sub {
-    margin-top: 10px;
-    font-size: 1rem;
-    color: var(--muted);
+  .rule {
+    width: 56px;
+    height: 2px;
+    background: var(--rule);
   }
-  .pos {
-    margin-top: 14px;
-    font-size: 0.75rem;
-    padding: 4px 10px;
-    border-radius: 999px;
-    background: var(--bg);
-    border: 1px solid var(--border);
-    color: var(--muted);
+  .pos-tag {
+    font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.04em;
+    color: var(--copper);
+  }
+  .known-note {
+    font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+    font-size: 0.72rem;
+    color: var(--petrol);
+    min-height: 1em;
   }
   .hint {
-    margin-top: 14px;
-    font-size: 0.75rem;
+    text-align: center;
+    font-size: 0.72rem;
     color: var(--muted);
   }
+
+  .judge-row {
+    display: flex;
+    gap: 10px;
+    margin-top: 18px;
+    width: 100%;
+    max-width: 440px;
+  }
+  .judge-row button { flex: 1; }
+
   .controls {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 10px;
-    margin-top: 22px;
+    margin-top: 14px;
     flex-wrap: wrap;
-    max-width: 420px;
+    max-width: 440px;
   }
+
   button {
-    font-family: inherit;
-    font-size: 0.9rem;
-    border: 1px solid var(--border);
-    background: var(--card-bg);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 0.88rem;
+    border: 1px solid var(--ink);
+    background: var(--card);
     color: var(--text);
     padding: 10px 16px;
-    border-radius: 10px;
     cursor: pointer;
-    transition: transform 0.1s ease, background 0.2s ease;
+    transition: transform 0.08s ease, background 0.2s ease;
   }
   button:hover { transform: translateY(-1px); }
   button:active { transform: translateY(0); }
-  button.primary {
-    background: var(--accent);
-    border-color: var(--accent);
-    color: #fff;
-  }
-  button.danger {
-    background: var(--accent-2);
-    border-color: var(--accent-2);
-    color: #fff;
-  }
-  button:disabled {
-    opacity: 0.4;
-    cursor: not-allowed;
-  }
-  .judge-row {
-    display: flex;
-    gap: 10px;
-    margin-top: 16px;
-  }
+  button:focus-visible { outline: 3px solid var(--copper); outline-offset: 2px; }
+  button.primary { background: var(--petrol); border-color: var(--petrol); color: #f3efe3; }
+  button.danger { background: var(--clay); border-color: var(--clay); color: #f3efe3; }
+
   .toolbar {
     display: flex;
     gap: 10px;
-    margin-top: 26px;
+    margin-top: 28px;
     flex-wrap: wrap;
     justify-content: center;
-    max-width: 420px;
+    max-width: 440px;
   }
   .toolbar button {
-    font-size: 0.8rem;
+    font-size: 0.76rem;
     padding: 8px 12px;
-  }
-  .done-screen {
-    text-align: center;
-    max-width: 420px;
-  }
-  .done-screen h2 {
-    margin-bottom: 6px;
-  }
-  footer {
-    margin-top: 30px;
-    font-size: 0.75rem;
+    background: transparent;
+    border-color: var(--rule);
     color: var(--muted);
+  }
+
+  footer {
+    margin-top: 32px;
+    font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+    font-size: 0.7rem;
+    color: var(--muted);
+    text-align: center;
   }
 </style>
 </head>
 <body>
 
-<header>
-  <h1>🇧🇦 Bosnian Flashcards</h1>
-  <p>Learn the 50 most common Bosnian words</p>
-</header>
+<button class="theme-toggle" id="btnTheme" type="button" aria-label="Toggle light/dark theme">◐ theme</button>
+
+<div class="masthead">
+  <h1>Bosanski · Rječnik</h1>
+  <span class="catalog">50 headwords</span>
+</div>
 
 <div class="stats">
-  <span id="statPos">Card 1 / 50</span>
-  <span id="statMastered">Mastered: 0</span>
+  <span>Card <strong id="statPos">1</strong> / 50</span>
+  <span>Known <strong id="statMastered">0</strong> / 50</span>
 </div>
-<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+<div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
 
 <div class="scene" id="scene">
-  <div class="card" id="card">
+  <div class="card" id="card" tabindex="0" role="button" aria-pressed="false" aria-label="Flashcard, press to flip">
     <div class="face front">
-      <span class="label" id="frontLabel">Bosnian</span>
-      <div class="word" id="frontWord"></div>
-      <div class="pos" id="frontPos"></div>
-      <div class="hint">Tap card to flip</div>
+      <div class="face-head">
+        <span id="frontLabel">Bosnian</span>
+        <span class="card-index" id="cardIndexFront"></span>
+      </div>
+      <div class="face-body">
+        <div class="word" id="frontWord"></div>
+        <div class="rule"></div>
+        <div class="pos-tag" id="frontPos"></div>
+      </div>
+      <div class="hint">tap or press space to flip</div>
     </div>
     <div class="face back">
-      <span class="label" id="backLabel">English</span>
-      <div class="word" id="backWord"></div>
-      <div class="sub" id="backNote"></div>
+      <div class="face-head">
+        <span id="backLabel">English</span>
+        <span class="card-index" id="cardIndexBack"></span>
+      </div>
+      <div class="face-body">
+        <div class="word" id="backWord"></div>
+        <div class="rule"></div>
+        <div class="known-note" id="backNote"></div>
+      </div>
+      <div class="hint">tap or press space to flip back</div>
     </div>
   </div>
 </div>
@@ -251,12 +358,12 @@
 </div>
 
 <div class="toolbar">
-  <button id="btnShuffle">🔀 Shuffle</button>
-  <button id="btnDirection">↔️ Switch direction</button>
-  <button id="btnRestart">↺ Reset progress</button>
+  <button id="btnShuffle">Shuffle</button>
+  <button id="btnDirection">Switch direction</button>
+  <button id="btnRestart">Reset progress</button>
 </div>
 
-<footer>Space = flip · ← → = navigate</footer>
+<footer>space flip · ← → navigate · k know · a study again</footer>
 
 <script>
 const WORDS = [
@@ -313,6 +420,7 @@ const WORDS = [
 ];
 
 const STORAGE_KEY = "bosnian-flashcards-progress-v1";
+const THEME_KEY = "bosnian-flashcards-theme-v1";
 
 let order = WORDS.map((_, i) => i);
 let index = 0;
@@ -338,6 +446,23 @@ function saveProgress() {
   }));
 }
 
+function loadTheme() {
+  try {
+    const saved = localStorage.getItem(THEME_KEY);
+    if (saved === "dark" || saved === "light") {
+      document.documentElement.setAttribute("data-theme", saved);
+    }
+  } catch (e) { /* ignore */ }
+}
+
+function toggleTheme() {
+  const current = document.documentElement.getAttribute("data-theme")
+    || (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+  const next = current === "dark" ? "light" : "dark";
+  document.documentElement.setAttribute("data-theme", next);
+  localStorage.setItem(THEME_KEY, next);
+}
+
 const card = document.getElementById("card");
 const frontWord = document.getElementById("frontWord");
 const frontPos = document.getElementById("frontPos");
@@ -345,6 +470,8 @@ const frontLabel = document.getElementById("frontLabel");
 const backWord = document.getElementById("backWord");
 const backNote = document.getElementById("backNote");
 const backLabel = document.getElementById("backLabel");
+const cardIndexFront = document.getElementById("cardIndexFront");
+const cardIndexBack = document.getElementById("cardIndexBack");
 const statPos = document.getElementById("statPos");
 const statMastered = document.getElementById("statMastered");
 const progressFill = document.getElementById("progressFill");
@@ -356,6 +483,7 @@ function currentWordObj() {
 function render() {
   const w = currentWordObj();
   const known = mastered.has(order[index]);
+  const posText = `No. ${index + 1} of ${WORDS.length}`;
 
   if (direction === "bs-en") {
     frontLabel.textContent = "Bosnian";
@@ -369,17 +497,21 @@ function render() {
     backWord.textContent = w.bs;
   }
   frontPos.textContent = w.pos;
-  backNote.textContent = known ? "✓ Marked as known" : "";
+  cardIndexFront.textContent = posText;
+  cardIndexBack.textContent = posText;
+  backNote.textContent = known ? "marked known" : "";
 
   card.classList.toggle("flipped", flipped);
-  statPos.textContent = `Card ${index + 1} / ${WORDS.length}`;
-  statMastered.textContent = `Mastered: ${mastered.size} / ${WORDS.length}`;
+  card.setAttribute("aria-pressed", String(flipped));
+  statPos.textContent = String(index + 1);
+  statMastered.textContent = String(mastered.size);
   progressFill.style.width = `${(mastered.size / WORDS.length) * 100}%`;
 }
 
 function flip() {
   flipped = !flipped;
   card.classList.toggle("flipped", flipped);
+  card.setAttribute("aria-pressed", String(flipped));
 }
 
 function goNext() {
@@ -430,7 +562,10 @@ function resetProgress() {
   render();
 }
 
-document.getElementById("card").addEventListener("click", flip);
+card.addEventListener("click", flip);
+card.addEventListener("keydown", (e) => {
+  if (e.code === "Enter" || e.code === "Space") { e.preventDefault(); flip(); }
+});
 document.getElementById("btnFlip").addEventListener("click", flip);
 document.getElementById("btnNext").addEventListener("click", goNext);
 document.getElementById("btnPrev").addEventListener("click", goPrev);
@@ -439,8 +574,10 @@ document.getElementById("btnDirection").addEventListener("click", switchDirectio
 document.getElementById("btnRestart").addEventListener("click", resetProgress);
 document.getElementById("btnKnow").addEventListener("click", markKnown);
 document.getElementById("btnAgain").addEventListener("click", markAgain);
+document.getElementById("btnTheme").addEventListener("click", toggleTheme);
 
 document.addEventListener("keydown", (e) => {
+  if (document.activeElement === card) return; // card handles its own space/enter
   if (e.code === "Space") { e.preventDefault(); flip(); }
   else if (e.code === "ArrowRight") goNext();
   else if (e.code === "ArrowLeft") goPrev();
@@ -448,6 +585,7 @@ document.addEventListener("keydown", (e) => {
   else if (e.code === "KeyA") markAgain();
 });
 
+loadTheme();
 loadProgress();
 render();
 </script>
