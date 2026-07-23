@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bosnian Flashcards — Top 50 Words</title>
+<style>
+  :root {
+    --bg: #f4f1ea;
+    --card-bg: #ffffff;
+    --text: #26241f;
+    --muted: #726f66;
+    --accent: #1f6f5c;
+    --accent-2: #c14e3d;
+    --border: #e2ddcf;
+    --shadow: rgba(38, 36, 31, 0.12);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1b1a17;
+      --card-bg: #26241f;
+      --text: #f1eee5;
+      --muted: #a8a294;
+      --accent: #4fb89b;
+      --accent-2: #e08268;
+      --border: #3a3730;
+      --shadow: rgba(0, 0, 0, 0.4);
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 24px 16px 48px;
+  }
+  header {
+    text-align: center;
+    margin-bottom: 20px;
+    max-width: 480px;
+  }
+  h1 {
+    font-size: 1.5rem;
+    margin: 0 0 4px;
+  }
+  header p {
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.9rem;
+  }
+  .stats {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 420px;
+    margin: 0 auto 12px;
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+  .progress-bar {
+    width: 100%;
+    max-width: 420px;
+    height: 6px;
+    background: var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 24px;
+  }
+  .progress-fill {
+    height: 100%;
+    background: var(--accent);
+    width: 0%;
+    transition: width 0.3s ease;
+  }
+  .scene {
+    width: 100%;
+    max-width: 420px;
+    perspective: 1200px;
+  }
+  .card {
+    position: relative;
+    width: 100%;
+    height: 260px;
+    cursor: pointer;
+    transform-style: preserve-3d;
+    transition: transform 0.5s cubic-bezier(.4,.2,.2,1);
+  }
+  .card.flipped {
+    transform: rotateY(180deg);
+  }
+  .face {
+    position: absolute;
+    inset: 0;
+    backface-visibility: hidden;
+    border-radius: 18px;
+    background: var(--card-bg);
+    box-shadow: 0 8px 24px var(--shadow);
+    border: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    text-align: center;
+  }
+  .face.back {
+    transform: rotateY(180deg);
+  }
+  .label {
+    position: absolute;
+    top: 14px;
+    left: 18px;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+  }
+  .word {
+    font-size: 2rem;
+    font-weight: 700;
+  }
+  .sub {
+    margin-top: 10px;
+    font-size: 1rem;
+    color: var(--muted);
+  }
+  .pos {
+    margin-top: 14px;
+    font-size: 0.75rem;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--muted);
+  }
+  .hint {
+    margin-top: 14px;
+    font-size: 0.75rem;
+    color: var(--muted);
+  }
+  .controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 22px;
+    flex-wrap: wrap;
+    max-width: 420px;
+  }
+  button {
+    font-family: inherit;
+    font-size: 0.9rem;
+    border: 1px solid var(--border);
+    background: var(--card-bg);
+    color: var(--text);
+    padding: 10px 16px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: transform 0.1s ease, background 0.2s ease;
+  }
+  button:hover { transform: translateY(-1px); }
+  button:active { transform: translateY(0); }
+  button.primary {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+  }
+  button.danger {
+    background: var(--accent-2);
+    border-color: var(--accent-2);
+    color: #fff;
+  }
+  button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+  .judge-row {
+    display: flex;
+    gap: 10px;
+    margin-top: 16px;
+  }
+  .toolbar {
+    display: flex;
+    gap: 10px;
+    margin-top: 26px;
+    flex-wrap: wrap;
+    justify-content: center;
+    max-width: 420px;
+  }
+  .toolbar button {
+    font-size: 0.8rem;
+    padding: 8px 12px;
+  }
+  .done-screen {
+    text-align: center;
+    max-width: 420px;
+  }
+  .done-screen h2 {
+    margin-bottom: 6px;
+  }
+  footer {
+    margin-top: 30px;
+    font-size: 0.75rem;
+    color: var(--muted);
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🇧🇦 Bosnian Flashcards</h1>
+  <p>Learn the 50 most common Bosnian words</p>
+</header>
+
+<div class="stats">
+  <span id="statPos">Card 1 / 50</span>
+  <span id="statMastered">Mastered: 0</span>
+</div>
+<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+
+<div class="scene" id="scene">
+  <div class="card" id="card">
+    <div class="face front">
+      <span class="label" id="frontLabel">Bosnian</span>
+      <div class="word" id="frontWord"></div>
+      <div class="pos" id="frontPos"></div>
+      <div class="hint">Tap card to flip</div>
+    </div>
+    <div class="face back">
+      <span class="label" id="backLabel">English</span>
+      <div class="word" id="backWord"></div>
+      <div class="sub" id="backNote"></div>
+    </div>
+  </div>
+</div>
+
+<div class="judge-row" id="judgeRow">
+  <button class="danger" id="btnAgain">Study again</button>
+  <button class="primary" id="btnKnow">I know this</button>
+</div>
+
+<div class="controls">
+  <button id="btnPrev">← Prev</button>
+  <button id="btnFlip">Flip</button>
+  <button id="btnNext">Next →</button>
+</div>
+
+<div class="toolbar">
+  <button id="btnShuffle">🔀 Shuffle</button>
+  <button id="btnDirection">↔️ Switch direction</button>
+  <button id="btnRestart">↺ Reset progress</button>
+</div>
+
+<footer>Space = flip · ← → = navigate</footer>
+
+<script>
+const WORDS = [
+  { bs: "ja", en: "I", pos: "pronoun" },
+  { bs: "ti", en: "you (singular)", pos: "pronoun" },
+  { bs: "on", en: "he", pos: "pronoun" },
+  { bs: "ona", en: "she", pos: "pronoun" },
+  { bs: "mi", en: "we", pos: "pronoun" },
+  { bs: "vi", en: "you (plural/formal)", pos: "pronoun" },
+  { bs: "oni", en: "they", pos: "pronoun" },
+  { bs: "ovaj", en: "this", pos: "pronoun" },
+  { bs: "taj", en: "that", pos: "pronoun" },
+  { bs: "ko", en: "who", pos: "pronoun" },
+  { bs: "i", en: "and", pos: "conjunction" },
+  { bs: "ili", en: "or", pos: "conjunction" },
+  { bs: "ali", en: "but", pos: "conjunction" },
+  { bs: "da", en: "yes / that", pos: "particle" },
+  { bs: "ne", en: "no / not", pos: "particle" },
+  { bs: "u", en: "in", pos: "preposition" },
+  { bs: "na", en: "on / at", pos: "preposition" },
+  { bs: "za", en: "for", pos: "preposition" },
+  { bs: "sa", en: "with", pos: "preposition" },
+  { bs: "iz", en: "from / out of", pos: "preposition" },
+  { bs: "šta", en: "what", pos: "question word" },
+  { bs: "gdje", en: "where", pos: "question word" },
+  { bs: "kada", en: "when", pos: "question word" },
+  { bs: "kako", en: "how", pos: "question word" },
+  { bs: "zašto", en: "why", pos: "question word" },
+  { bs: "biti", en: "to be", pos: "verb" },
+  { bs: "imati", en: "to have", pos: "verb" },
+  { bs: "htjeti", en: "to want", pos: "verb" },
+  { bs: "moći", en: "can / to be able", pos: "verb" },
+  { bs: "znati", en: "to know", pos: "verb" },
+  { bs: "ići", en: "to go", pos: "verb" },
+  { bs: "raditi", en: "to do / to work", pos: "verb" },
+  { bs: "reći", en: "to say", pos: "verb" },
+  { bs: "vidjeti", en: "to see", pos: "verb" },
+  { bs: "voljeti", en: "to love / to like", pos: "verb" },
+  { bs: "kuća", en: "house", pos: "noun" },
+  { bs: "voda", en: "water", pos: "noun" },
+  { bs: "vrijeme", en: "time / weather", pos: "noun" },
+  { bs: "dan", en: "day", pos: "noun" },
+  { bs: "čovjek", en: "person / man", pos: "noun" },
+  { bs: "žena", en: "woman", pos: "noun" },
+  { bs: "dijete", en: "child", pos: "noun" },
+  { bs: "prijatelj", en: "friend", pos: "noun" },
+  { bs: "grad", en: "city", pos: "noun" },
+  { bs: "život", en: "life", pos: "noun" },
+  { bs: "dobro", en: "good / well", pos: "adjective/adverb" },
+  { bs: "veliki", en: "big", pos: "adjective" },
+  { bs: "mali", en: "small", pos: "adjective" },
+  { bs: "novi", en: "new", pos: "adjective" },
+  { bs: "mnogo", en: "much / a lot", pos: "adverb" },
+];
+
+const STORAGE_KEY = "bosnian-flashcards-progress-v1";
+
+let order = WORDS.map((_, i) => i);
+let index = 0;
+let flipped = false;
+let direction = "bs-en"; // bs-en or en-bs
+let mastered = new Set();
+
+function loadProgress() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) {
+      const data = JSON.parse(raw);
+      mastered = new Set(data.mastered || []);
+      direction = data.direction || "bs-en";
+    }
+  } catch (e) { /* ignore corrupt storage */ }
+}
+
+function saveProgress() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify({
+    mastered: Array.from(mastered),
+    direction,
+  }));
+}
+
+const card = document.getElementById("card");
+const frontWord = document.getElementById("frontWord");
+const frontPos = document.getElementById("frontPos");
+const frontLabel = document.getElementById("frontLabel");
+const backWord = document.getElementById("backWord");
+const backNote = document.getElementById("backNote");
+const backLabel = document.getElementById("backLabel");
+const statPos = document.getElementById("statPos");
+const statMastered = document.getElementById("statMastered");
+const progressFill = document.getElementById("progressFill");
+
+function currentWordObj() {
+  return WORDS[order[index]];
+}
+
+function render() {
+  const w = currentWordObj();
+  const known = mastered.has(order[index]);
+
+  if (direction === "bs-en") {
+    frontLabel.textContent = "Bosnian";
+    frontWord.textContent = w.bs;
+    backLabel.textContent = "English";
+    backWord.textContent = w.en;
+  } else {
+    frontLabel.textContent = "English";
+    frontWord.textContent = w.en;
+    backLabel.textContent = "Bosnian";
+    backWord.textContent = w.bs;
+  }
+  frontPos.textContent = w.pos;
+  backNote.textContent = known ? "✓ Marked as known" : "";
+
+  card.classList.toggle("flipped", flipped);
+  statPos.textContent = `Card ${index + 1} / ${WORDS.length}`;
+  statMastered.textContent = `Mastered: ${mastered.size} / ${WORDS.length}`;
+  progressFill.style.width = `${(mastered.size / WORDS.length) * 100}%`;
+}
+
+function flip() {
+  flipped = !flipped;
+  card.classList.toggle("flipped", flipped);
+}
+
+function goNext() {
+  flipped = false;
+  index = (index + 1) % order.length;
+  render();
+}
+
+function goPrev() {
+  flipped = false;
+  index = (index - 1 + order.length) % order.length;
+  render();
+}
+
+function shuffle() {
+  for (let i = order.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [order[i], order[j]] = [order[j], order[i]];
+  }
+  index = 0;
+  flipped = false;
+  render();
+}
+
+function markKnown() {
+  mastered.add(order[index]);
+  saveProgress();
+  goNext();
+}
+
+function markAgain() {
+  mastered.delete(order[index]);
+  saveProgress();
+  goNext();
+}
+
+function switchDirection() {
+  direction = direction === "bs-en" ? "en-bs" : "bs-en";
+  flipped = false;
+  saveProgress();
+  render();
+}
+
+function resetProgress() {
+  if (!confirm("Reset all progress? This clears which words you've marked as known.")) return;
+  mastered.clear();
+  saveProgress();
+  render();
+}
+
+document.getElementById("card").addEventListener("click", flip);
+document.getElementById("btnFlip").addEventListener("click", flip);
+document.getElementById("btnNext").addEventListener("click", goNext);
+document.getElementById("btnPrev").addEventListener("click", goPrev);
+document.getElementById("btnShuffle").addEventListener("click", shuffle);
+document.getElementById("btnDirection").addEventListener("click", switchDirection);
+document.getElementById("btnRestart").addEventListener("click", resetProgress);
+document.getElementById("btnKnow").addEventListener("click", markKnown);
+document.getElementById("btnAgain").addEventListener("click", markAgain);
+
+document.addEventListener("keydown", (e) => {
+  if (e.code === "Space") { e.preventDefault(); flip(); }
+  else if (e.code === "ArrowRight") goNext();
+  else if (e.code === "ArrowLeft") goPrev();
+  else if (e.code === "KeyK") markKnown();
+  else if (e.code === "KeyA") markAgain();
+});
+
+loadProgress();
+render();
+</script>
+
+</body>
+</html>
