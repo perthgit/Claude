@@ -294,6 +294,56 @@
     color: var(--muted);
   }
 
+  .example {
+    width: 100%;
+    max-width: 440px;
+    margin-top: 16px;
+    padding: 14px 16px;
+    background: var(--card);
+    border: 1px solid var(--rule);
+    border-left: 3px solid var(--petrol);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .example-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .example-bs {
+    font-size: 0.95rem;
+    color: var(--text);
+    text-wrap: balance;
+  }
+  .example-en {
+    font-size: 0.8rem;
+    color: var(--muted);
+    font-style: italic;
+    text-wrap: balance;
+  }
+  .example-speak {
+    flex-shrink: 0;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 1px solid var(--rule);
+    background: transparent;
+    color: var(--petrol);
+    font-size: 0.82rem;
+    line-height: 1;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .example-speak.speaking {
+    background: var(--petrol);
+    color: var(--card);
+    animation: pronounce-pulse 0.6s ease-in-out infinite alternate;
+  }
+
   .judge-row {
     display: flex;
     gap: 10px;
@@ -436,6 +486,14 @@
   </div>
 </div>
 
+<div class="example" id="example">
+  <div class="example-head">
+    <div class="example-bs" id="exampleBs"></div>
+    <button class="example-speak" id="btnSpeakSentence" type="button" aria-label="Pronounce the example sentence">🔊</button>
+  </div>
+  <div class="example-en" id="exampleEn"></div>
+</div>
+
 <div class="judge-row" id="judgeRow">
   <button class="danger" id="btnAgain">Study again</button>
   <button class="primary" id="btnKnow">I know this</button>
@@ -463,56 +521,56 @@
 
 <script>
 const WORDS = [
-  { bs: "ja", en: "I", pos: "pronoun" },
-  { bs: "ti", en: "you (singular)", pos: "pronoun" },
-  { bs: "on", en: "he", pos: "pronoun" },
-  { bs: "ona", en: "she", pos: "pronoun" },
-  { bs: "mi", en: "we", pos: "pronoun" },
-  { bs: "vi", en: "you (plural/formal)", pos: "pronoun" },
-  { bs: "oni", en: "they", pos: "pronoun" },
-  { bs: "ovaj", en: "this", pos: "pronoun" },
-  { bs: "taj", en: "that", pos: "pronoun" },
-  { bs: "ko", en: "who", pos: "pronoun" },
-  { bs: "i", en: "and", pos: "conjunction" },
-  { bs: "ili", en: "or", pos: "conjunction" },
-  { bs: "ali", en: "but", pos: "conjunction" },
-  { bs: "da", en: "yes / that", pos: "particle" },
-  { bs: "ne", en: "no / not", pos: "particle" },
-  { bs: "u", en: "in", pos: "preposition" },
-  { bs: "na", en: "on / at", pos: "preposition" },
-  { bs: "za", en: "for", pos: "preposition" },
-  { bs: "sa", en: "with", pos: "preposition" },
-  { bs: "iz", en: "from / out of", pos: "preposition" },
-  { bs: "šta", en: "what", pos: "question word" },
-  { bs: "gdje", en: "where", pos: "question word" },
-  { bs: "kada", en: "when", pos: "question word" },
-  { bs: "kako", en: "how", pos: "question word" },
-  { bs: "zašto", en: "why", pos: "question word" },
-  { bs: "biti", en: "to be", pos: "verb" },
-  { bs: "imati", en: "to have", pos: "verb" },
-  { bs: "htjeti", en: "to want", pos: "verb" },
-  { bs: "moći", en: "can / to be able", pos: "verb" },
-  { bs: "znati", en: "to know", pos: "verb" },
-  { bs: "ići", en: "to go", pos: "verb" },
-  { bs: "raditi", en: "to do / to work", pos: "verb" },
-  { bs: "reći", en: "to say", pos: "verb" },
-  { bs: "vidjeti", en: "to see", pos: "verb" },
-  { bs: "voljeti", en: "to love / to like", pos: "verb" },
-  { bs: "kuća", en: "house", pos: "noun" },
-  { bs: "voda", en: "water", pos: "noun" },
-  { bs: "vrijeme", en: "time / weather", pos: "noun" },
-  { bs: "dan", en: "day", pos: "noun" },
-  { bs: "čovjek", en: "person / man", pos: "noun" },
-  { bs: "žena", en: "woman", pos: "noun" },
-  { bs: "dijete", en: "child", pos: "noun" },
-  { bs: "prijatelj", en: "friend", pos: "noun" },
-  { bs: "grad", en: "city", pos: "noun" },
-  { bs: "život", en: "life", pos: "noun" },
-  { bs: "dobro", en: "good / well", pos: "adjective/adverb" },
-  { bs: "veliki", en: "big", pos: "adjective" },
-  { bs: "mali", en: "small", pos: "adjective" },
-  { bs: "novi", en: "new", pos: "adjective" },
-  { bs: "mnogo", en: "much / a lot", pos: "adverb" },
+  { bs: "ja", en: "I", pos: "pronoun", sentence: "Ja sam dobro.", sentenceEn: "I am well." },
+  { bs: "ti", en: "you (singular)", pos: "pronoun", sentence: "Ti si moj prijatelj.", sentenceEn: "You are my friend." },
+  { bs: "on", en: "he", pos: "pronoun", sentence: "On ima veliku kuću.", sentenceEn: "He has a big house." },
+  { bs: "ona", en: "she", pos: "pronoun", sentence: "Ona voli svoj grad.", sentenceEn: "She loves her city." },
+  { bs: "mi", en: "we", pos: "pronoun", sentence: "Mi idemo u grad.", sentenceEn: "We are going to the city." },
+  { bs: "vi", en: "you (plural/formal)", pos: "pronoun", sentence: "Vi znate mnogo.", sentenceEn: "You know a lot." },
+  { bs: "oni", en: "they", pos: "pronoun", sentence: "Oni hoće ići kući.", sentenceEn: "They want to go home." },
+  { bs: "ovaj", en: "this", pos: "pronoun", sentence: "Ovaj grad je velik.", sentenceEn: "This city is big." },
+  { bs: "taj", en: "that", pos: "pronoun", sentence: "Taj čovjek je moj prijatelj.", sentenceEn: "That man is my friend." },
+  { bs: "ko", en: "who", pos: "pronoun", sentence: "Ko je taj čovjek?", sentenceEn: "Who is that man?" },
+  { bs: "i", en: "and", pos: "conjunction", sentence: "Ja i ti smo prijatelji.", sentenceEn: "You and I are friends." },
+  { bs: "ili", en: "or", pos: "conjunction", sentence: "Hoćeš vodu ili ne?", sentenceEn: "Do you want water or not?" },
+  { bs: "ali", en: "but", pos: "conjunction", sentence: "Grad je mali, ali dobar.", sentenceEn: "The city is small, but good." },
+  { bs: "da", en: "yes / that", pos: "particle", sentence: "Da, ja znam.", sentenceEn: "Yes, I know." },
+  { bs: "ne", en: "no / not", pos: "particle", sentence: "Ne, to nije dobro.", sentenceEn: "No, that's not good." },
+  { bs: "u", en: "in", pos: "preposition", sentence: "Dijete je u kući.", sentenceEn: "The child is in the house." },
+  { bs: "na", en: "on / at", pos: "preposition", sentence: "Grad je na vodi.", sentenceEn: "The city is on the water." },
+  { bs: "za", en: "for", pos: "preposition", sentence: "Voda je dobra za život.", sentenceEn: "Water is good for life." },
+  { bs: "sa", en: "with", pos: "preposition", sentence: "Ona ide sa mnom.", sentenceEn: "She is going with me." },
+  { bs: "iz", en: "from / out of", pos: "preposition", sentence: "On je iz grada.", sentenceEn: "He is from the city." },
+  { bs: "šta", en: "what", pos: "question word", sentence: "Šta ti znaš?", sentenceEn: "What do you know?" },
+  { bs: "gdje", en: "where", pos: "question word", sentence: "Gdje je tvoj prijatelj?", sentenceEn: "Where is your friend?" },
+  { bs: "kada", en: "when", pos: "question word", sentence: "Kada ideš kući?", sentenceEn: "When are you going home?" },
+  { bs: "kako", en: "how", pos: "question word", sentence: "Kako si danas?", sentenceEn: "How are you today?" },
+  { bs: "zašto", en: "why", pos: "question word", sentence: "Zašto on to radi?", sentenceEn: "Why is he doing that?" },
+  { bs: "biti", en: "to be", pos: "verb", sentence: "On hoće biti dobar prijatelj.", sentenceEn: "He wants to be a good friend." },
+  { bs: "imati", en: "to have", pos: "verb", sentence: "On ima dobar život.", sentenceEn: "He has a good life." },
+  { bs: "htjeti", en: "to want", pos: "verb", sentence: "Ja hoću ići kući.", sentenceEn: "I want to go home." },
+  { bs: "moći", en: "can / to be able", pos: "verb", sentence: "Ti možeš znati mnogo.", sentenceEn: "You can know a lot." },
+  { bs: "znati", en: "to know", pos: "verb", sentence: "Mi znamo taj grad.", sentenceEn: "We know that city." },
+  { bs: "ići", en: "to go", pos: "verb", sentence: "Ona ide u grad.", sentenceEn: "She is going to the city." },
+  { bs: "raditi", en: "to do / to work", pos: "verb", sentence: "Šta ti radiš?", sentenceEn: "What are you doing?" },
+  { bs: "reći", en: "to say", pos: "verb", sentence: "Ona hoće nešto reći.", sentenceEn: "She wants to say something." },
+  { bs: "vidjeti", en: "to see", pos: "verb", sentence: "Ja hoću vidjeti taj grad.", sentenceEn: "I want to see that city." },
+  { bs: "voljeti", en: "to love / to like", pos: "verb", sentence: "On voli svoju ženu.", sentenceEn: "He loves his wife." },
+  { bs: "kuća", en: "house", pos: "noun", sentence: "Ovo je moja kuća.", sentenceEn: "This is my house." },
+  { bs: "voda", en: "water", pos: "noun", sentence: "Dijete pije vodu.", sentenceEn: "The child is drinking water." },
+  { bs: "vrijeme", en: "time / weather", pos: "noun", sentence: "Vrijeme je lijepo danas.", sentenceEn: "The weather is nice today." },
+  { bs: "dan", en: "day", pos: "noun", sentence: "Ovo je dobar dan.", sentenceEn: "This is a good day." },
+  { bs: "čovjek", en: "person / man", pos: "noun", sentence: "Taj čovjek zna mnogo.", sentenceEn: "That man knows a lot." },
+  { bs: "žena", en: "woman", pos: "noun", sentence: "Ona je dobra žena.", sentenceEn: "She is a good woman." },
+  { bs: "dijete", en: "child", pos: "noun", sentence: "Naše dijete je malo.", sentenceEn: "Our child is small." },
+  { bs: "prijatelj", en: "friend", pos: "noun", sentence: "On je moj najbolji prijatelj.", sentenceEn: "He is my best friend." },
+  { bs: "grad", en: "city", pos: "noun", sentence: "Ovaj grad je star.", sentenceEn: "This city is old." },
+  { bs: "život", en: "life", pos: "noun", sentence: "Volim svoj život.", sentenceEn: "I love my life." },
+  { bs: "dobro", en: "good / well", pos: "adjective/adverb", sentence: "On radi dobro.", sentenceEn: "He does well." },
+  { bs: "veliki", en: "big", pos: "adjective", sentence: "Ovaj čovjek je veliki prijatelj.", sentenceEn: "This man is a great friend." },
+  { bs: "mali", en: "small", pos: "adjective", sentence: "Imam mali problem.", sentenceEn: "I have a small problem." },
+  { bs: "novi", en: "new", pos: "adjective", sentence: "Ovo je novi dan.", sentenceEn: "This is a new day." },
+  { bs: "mnogo", en: "much / a lot", pos: "adverb", sentence: "On zna mnogo o gradu.", sentenceEn: "He knows a lot about the city." },
 ];
 
 // Real pronunciation recordings, sourced from Wikimedia Commons / Wiktionary.
@@ -613,6 +671,7 @@ function toggleTheme() {
 }
 
 const btnSpeak = document.getElementById("btnSpeak");
+const btnSpeakSentence = document.getElementById("btnSpeakSentence");
 const voiceInfoEl = document.getElementById("voiceInfo");
 let voices = [];
 
@@ -668,9 +727,18 @@ function showSpeakStatus(msg) {
 
 let currentAudio = null;
 
+// Only one audio source (recording or either TTS button) should ever play at
+// once - starting a new one stops whatever else was mid-playback.
+function stopAllAudio() {
+  if ("speechSynthesis" in window) window.speechSynthesis.cancel();
+  if (currentAudio) { currentAudio.pause(); currentAudio = null; }
+  btnSpeak.classList.remove("speaking");
+  btnSpeakSentence.classList.remove("speaking");
+}
+
 function playRecording(rec) {
   return new Promise((resolve, reject) => {
-    if (currentAudio) { currentAudio.pause(); currentAudio = null; }
+    stopAllAudio();
     const audio = new Audio(rec.url);
     currentAudio = audio;
     audio.addEventListener("playing", () => btnSpeak.classList.add("speaking"));
@@ -680,15 +748,14 @@ function playRecording(rec) {
   });
 }
 
-function speakWithTTS() {
+function speakText(text, button) {
   if (!("speechSynthesis" in window)) {
     showSpeakStatus("Pronunciation not supported in this browser.");
     return;
   }
   refreshVoices(); // some browsers only populate this lazily
-  const w = currentWordObj();
-  window.speechSynthesis.cancel();
-  const utter = new SpeechSynthesisUtterance(w.bs);
+  stopAllAudio();
+  const utter = new SpeechSynthesisUtterance(text);
   const voice = pickVoice();
   // Only set voice/lang when we actually found a matching installed voice.
   // Forcing an uninstalled lang tag (e.g. "bs-BA") makes many Android TTS
@@ -699,10 +766,10 @@ function speakWithTTS() {
   }
   utter.rate = 0.85;
   let started = false;
-  utter.onstart = () => { started = true; btnSpeak.classList.add("speaking"); };
-  utter.onend = () => btnSpeak.classList.remove("speaking");
+  utter.onstart = () => { started = true; button.classList.add("speaking"); };
+  utter.onend = () => button.classList.remove("speaking");
   utter.onerror = () => {
-    btnSpeak.classList.remove("speaking");
+    button.classList.remove("speaking");
     showSpeakStatus("Couldn't play audio on this device.");
   };
   window.speechSynthesis.speak(utter);
@@ -717,6 +784,10 @@ function speakWithTTS() {
   }, 1200);
 }
 
+function speakWithTTS() {
+  speakText(currentWordObj().bs, btnSpeak);
+}
+
 function speakWord() {
   const w = currentWordObj();
   const rec = RECORDINGS[w.bs];
@@ -729,6 +800,12 @@ function speakWord() {
   }
   speakWithTTS();
 }
+
+function speakSentence() {
+  speakText(currentWordObj().sentence, btnSpeakSentence);
+}
+
+btnSpeakSentence.addEventListener("click", speakSentence);
 
 if ("speechSynthesis" in window) {
   refreshVoices();
@@ -748,6 +825,8 @@ const cardIndexBack = document.getElementById("cardIndexBack");
 const statPos = document.getElementById("statPos");
 const statMastered = document.getElementById("statMastered");
 const progressFill = document.getElementById("progressFill");
+const exampleBs = document.getElementById("exampleBs");
+const exampleEn = document.getElementById("exampleEn");
 
 function currentWordObj() {
   return WORDS[order[index]];
@@ -773,6 +852,8 @@ function render() {
   cardIndexFront.textContent = posText;
   cardIndexBack.textContent = posText;
   backNote.textContent = known ? "marked known" : "";
+  exampleBs.textContent = w.sentence;
+  exampleEn.textContent = w.sentenceEn;
 
   card.classList.toggle("flipped", flipped);
   card.setAttribute("aria-pressed", String(flipped));
