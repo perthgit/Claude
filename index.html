@@ -156,6 +156,16 @@
     width: 0%;
     transition: width 0.35s ease;
   }
+  .voice-info {
+    width: 100%;
+    max-width: 440px;
+    min-height: 1.1em;
+    margin-bottom: 4px;
+    font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+    font-size: 0.68rem;
+    color: var(--muted);
+    text-align: center;
+  }
   .speak-status {
     width: 100%;
     max-width: 440px;
@@ -358,6 +368,7 @@
   <span>Known <strong id="statMastered">0</strong> / 50</span>
 </div>
 <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+<div class="voice-info" id="voiceInfo"></div>
 <div class="speak-status" id="speakStatus" aria-live="polite"></div>
 
 <div class="scene" id="scene">
@@ -508,10 +519,12 @@ function toggleTheme() {
 }
 
 const btnSpeak = document.getElementById("btnSpeak");
+const voiceInfoEl = document.getElementById("voiceInfo");
 let voices = [];
 
 function refreshVoices() {
   voices = ("speechSynthesis" in window) ? window.speechSynthesis.getVoices() : [];
+  updateVoiceInfo();
 }
 
 function pickVoice() {
@@ -519,10 +532,31 @@ function pickVoice() {
   // close enough to be intelligible, so fall back through them.
   const prefs = ["bs", "hr", "sr"];
   for (const p of prefs) {
-    const match = voices.find((v) => v.lang && v.lang.toLowerCase().startsWith(p));
-    if (match) return match;
+    const candidates = voices.filter((v) => v.lang && v.lang.toLowerCase().startsWith(p));
+    if (candidates.length === 0) continue;
+    // Voices with localService === false are cloud/network-backed (e.g. Google's
+    // or Microsoft's online voices) and are almost always far more natural-sounding
+    // than the local device voices desktop browsers tend to fall back to.
+    const network = candidates.find((v) => v.localService === false);
+    return network || candidates[0];
   }
   return null;
+}
+
+function updateVoiceInfo() {
+  if (!voiceInfoEl) return;
+  if (!("speechSynthesis" in window)) {
+    voiceInfoEl.textContent = "";
+    return;
+  }
+  if (voices.length === 0) {
+    voiceInfoEl.textContent = "loading voices…";
+    return;
+  }
+  const voice = pickVoice();
+  voiceInfoEl.textContent = voice
+    ? `voice: ${voice.name} · ${voice.lang} · ${voice.localService === false ? "network" : "local"}`
+    : "no bs/hr/sr voice found — using device default";
 }
 
 function showSpeakStatus(msg) {
