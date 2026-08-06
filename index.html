@@ -352,6 +352,41 @@
     color: var(--muted);
     text-align: center;
   }
+
+  .credits {
+    width: 100%;
+    max-width: 440px;
+    margin-top: 18px;
+    font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+    font-size: 0.68rem;
+    color: var(--muted);
+  }
+  .credits summary {
+    cursor: pointer;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .credits summary:hover { color: var(--text); }
+  .credits ul {
+    list-style: none;
+    margin: 10px 0 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .credits li { line-height: 1.5; }
+  .credits .credit-word { color: var(--copper); }
+  .credits a { color: var(--petrol); }
+  .credits .credit-note {
+    display: block;
+    color: var(--muted);
+    font-style: italic;
+  }
+  .credits p {
+    margin: 10px 0 0;
+  }
 </style>
 </head>
 <body>
@@ -420,6 +455,12 @@
 
 <footer>space flip · ← → navigate · p pronounce · k know · a study again</footer>
 
+<details class="credits">
+  <summary id="creditsSummary">Audio credits</summary>
+  <ul id="creditsList"></ul>
+  <p>All other words use your device's text-to-speech (see the voice caption above the card).</p>
+</details>
+
 <script>
 const WORDS = [
   { bs: "ja", en: "I", pos: "pronoun" },
@@ -473,6 +514,59 @@ const WORDS = [
   { bs: "novi", en: "new", pos: "adjective" },
   { bs: "mnogo", en: "much / a lot", pos: "adverb" },
 ];
+
+// Real pronunciation recordings, sourced from Wikimedia Commons / Wiktionary.
+// Coverage is intentionally partial: Bosnian Wiktionary has essentially no
+// entries for this word list, and Croatian turned up nothing usable, so
+// every recording here is Serbian (Lingua Libre project) - closely related
+// to Bosnian, same pattern as the existing bs->hr->sr TTS fallback. Words
+// without an entry here fall back to speechSynthesis. See the credits
+// section at the bottom of the page for full attribution.
+const RECORDINGS = {
+  ja: {
+    url: "https://upload.wikimedia.org/wikipedia/commons/d/d9/LL-Q9299_%28srp%29-Uni%C5%A1tihEkonomiju-ja.wav",
+    filePage: "https://commons.wikimedia.org/wiki/File:LL-Q9299_(srp)-Uni%C5%A1tihEkonomiju-ja.wav",
+    lang: "sr", license: "CC0", licenseUrl: "https://creativecommons.org/publicdomain/zero/1.0/",
+    author: "UništihEkonomiju",
+  },
+  ti: {
+    url: "https://upload.wikimedia.org/wikipedia/commons/f/fe/LL-Q9299_%28srp%29-Uni%C5%A1tihEkonomiju-ti.wav",
+    filePage: "https://commons.wikimedia.org/wiki/File:LL-Q9299_(srp)-Uni%C5%A1tihEkonomiju-ti.wav",
+    lang: "sr", license: "CC BY 4.0", licenseUrl: "https://creativecommons.org/licenses/by/4.0/",
+    author: "UništihEkonomiju",
+  },
+  on: {
+    url: "https://upload.wikimedia.org/wikipedia/commons/8/8a/LL-Q9299_%28srp%29-Uni%C5%A1tihEkonomiju-on.wav",
+    filePage: "https://commons.wikimedia.org/wiki/File:LL-Q9299_(srp)-Uni%C5%A1tihEkonomiju-on.wav",
+    lang: "sr", license: "CC BY 4.0", licenseUrl: "https://creativecommons.org/licenses/by/4.0/",
+    author: "UništihEkonomiju",
+  },
+  gdje: {
+    url: "https://upload.wikimedia.org/wikipedia/commons/3/36/LL-Q9299_%28srp%29-Uni%C5%A1tihEkonomiju-gde.wav",
+    filePage: "https://commons.wikimedia.org/wiki/File:LL-Q9299_(srp)-Uni%C5%A1tihEkonomiju-gde.wav",
+    lang: "sr", license: "CC BY 4.0", licenseUrl: "https://creativecommons.org/licenses/by/4.0/",
+    author: "UništihEkonomiju",
+    note: "recording is of the Serbian ekavian form “gde” — Bosnian uses ijekavian “gdje”",
+  },
+  zašto: {
+    url: "https://upload.wikimedia.org/wikipedia/commons/b/be/LL-Q9299_%28srp%29-Uni%C5%A1tihEkonomiju-za%C5%A1to.wav",
+    filePage: "https://commons.wikimedia.org/wiki/File:LL-Q9299_(srp)-Uni%C5%A1tihEkonomiju-za%C5%A1to.wav",
+    lang: "sr", license: "CC0", licenseUrl: "https://creativecommons.org/publicdomain/zero/1.0/",
+    author: "UništihEkonomiju",
+  },
+  voda: {
+    url: "https://upload.wikimedia.org/wikipedia/commons/e/e6/LL-Q9299_%28srp%29-Uni%C5%A1tihEkonomiju-voda.wav",
+    filePage: "https://commons.wikimedia.org/wiki/File:LL-Q9299_(srp)-Uni%C5%A1tihEkonomiju-voda.wav",
+    lang: "sr", license: "CC0", licenseUrl: "https://creativecommons.org/publicdomain/zero/1.0/",
+    author: "UništihEkonomiju",
+  },
+  šta: {
+    url: "https://upload.wikimedia.org/wikipedia/commons/c/cb/LL-Q9299_%28srp%29-Uni%C5%A1tihEkonomiju-%C5%A1ta.wav",
+    filePage: "https://commons.wikimedia.org/wiki/File:LL-Q9299_(srp)-Uni%C5%A1tihEkonomiju-%C5%A1ta.wav",
+    lang: "sr", license: "CC BY 4.0", licenseUrl: "https://creativecommons.org/licenses/by/4.0/",
+    author: "UništihEkonomiju",
+  },
+};
 
 const STORAGE_KEY = "bosnian-flashcards-progress-v1";
 const THEME_KEY = "bosnian-flashcards-theme-v1";
@@ -545,6 +639,12 @@ function pickVoice() {
 
 function updateVoiceInfo() {
   if (!voiceInfoEl) return;
+  const w = currentWordObj();
+  const rec = w && RECORDINGS[w.bs];
+  if (rec) {
+    voiceInfoEl.textContent = `recording: ${rec.lang} · ${rec.license} · ${rec.author}`;
+    return;
+  }
   if (!("speechSynthesis" in window)) {
     voiceInfoEl.textContent = "";
     return;
@@ -566,7 +666,25 @@ function showSpeakStatus(msg) {
   showSpeakStatus._t = setTimeout(() => { el.textContent = ""; }, 4000);
 }
 
-function speakWord() {
+let currentAudio = null;
+
+function playRecording(rec) {
+  return new Promise((resolve, reject) => {
+    if (currentAudio) { currentAudio.pause(); currentAudio = null; }
+    const audio = new Audio(rec.url);
+    currentAudio = audio;
+    audio.addEventListener("playing", () => btnSpeak.classList.add("speaking"));
+    audio.addEventListener("ended", () => { btnSpeak.classList.remove("speaking"); resolve(); });
+    audio.addEventListener("error", () => { btnSpeak.classList.remove("speaking"); reject(new Error("recording failed to load")); });
+    audio.play().catch(reject);
+  });
+}
+
+function speakWithTTS() {
+  if (!("speechSynthesis" in window)) {
+    showSpeakStatus("Pronunciation not supported in this browser.");
+    return;
+  }
   refreshVoices(); // some browsers only populate this lazily
   const w = currentWordObj();
   window.speechSynthesis.cancel();
@@ -599,15 +717,24 @@ function speakWord() {
   }, 1200);
 }
 
+function speakWord() {
+  const w = currentWordObj();
+  const rec = RECORDINGS[w.bs];
+  if (rec) {
+    playRecording(rec).catch(() => {
+      showSpeakStatus("Recording failed to play — falling back to text-to-speech.");
+      speakWithTTS();
+    });
+    return;
+  }
+  speakWithTTS();
+}
+
 if ("speechSynthesis" in window) {
   refreshVoices();
   window.speechSynthesis.onvoiceschanged = refreshVoices;
-  btnSpeak.addEventListener("click", speakWord);
-} else {
-  btnSpeak.disabled = true;
-  btnSpeak.textContent = "🔇";
-  btnSpeak.setAttribute("aria-label", "Pronunciation not supported in this browser");
 }
+btnSpeak.addEventListener("click", speakWord);
 
 const card = document.getElementById("card");
 const frontWord = document.getElementById("frontWord");
@@ -652,6 +779,7 @@ function render() {
   statPos.textContent = String(index + 1);
   statMastered.textContent = String(mastered.size);
   progressFill.style.width = `${(mastered.size / WORDS.length) * 100}%`;
+  updateVoiceInfo();
 }
 
 function flip() {
@@ -732,8 +860,44 @@ document.addEventListener("keydown", (e) => {
   else if (e.code === "KeyP" && "speechSynthesis" in window) speakWord();
 });
 
+function renderCredits() {
+  const list = document.getElementById("creditsList");
+  const summary = document.getElementById("creditsSummary");
+  if (!list) return;
+  const entries = Object.entries(RECORDINGS);
+  summary.textContent = `Audio credits (${entries.length} recording${entries.length === 1 ? "" : "s"})`;
+  list.innerHTML = "";
+  for (const [word, rec] of entries) {
+    const li = document.createElement("li");
+    const link = document.createElement("a");
+    link.href = rec.filePage;
+    link.target = "_blank";
+    link.rel = "noopener";
+    link.textContent = "Wikimedia Commons";
+    const licenseLink = document.createElement("a");
+    licenseLink.href = rec.licenseUrl;
+    licenseLink.target = "_blank";
+    licenseLink.rel = "noopener";
+    licenseLink.textContent = rec.license;
+
+    const wordSpan = document.createElement("span");
+    wordSpan.className = "credit-word";
+    wordSpan.textContent = word;
+
+    li.append(wordSpan, ` — recording by ${rec.author}, `, link, " · ", licenseLink);
+    if (rec.note) {
+      const note = document.createElement("span");
+      note.className = "credit-note";
+      note.textContent = rec.note;
+      li.appendChild(note);
+    }
+    list.appendChild(li);
+  }
+}
+
 loadTheme();
 loadProgress();
+renderCredits();
 render();
 </script>
 
