@@ -1,0 +1,1167 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<meta name="robots" content="noindex">
+<meta name="description" content="Hajde: learn Bosnian from scratch.">
+<title>Hajde</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Literata:opsz,wght@7..72,400;7..72,500;7..72,600&display=swap">
+<style>
+[hidden]{display:none!important}
+/* Layout concept: one calm phone-width column (centred on desktop). Learn path and Review are two tabs;
+   a lesson or review session takes over the whole column with a progress bar on top and an action dock below.
+   Palette comes from the Neretva: river teal, cool limestone neutrals, lily gold used only for progress. */
+:root{
+  --bg:#EEF2F1;
+  --surface:#FFFFFF;
+  --ink:#14221F;
+  --muted:#586A65;
+  --line:#D5DEDB;
+  --accent:#17636B;
+  --accent-ink:#FFFFFF;
+  --accent-soft:#DCEDEE;
+  --gold:#B8801A;
+  --on-gold:#1B1405;
+  --good:#2C7A4B;
+  --good-soft:#DDF0E4;
+  --bad:#B3402D;
+  --bad-soft:#F7E0DA;
+  --shadow:0 1px 2px rgba(20,34,31,.06),0 8px 24px rgba(20,34,31,.06);
+  --font-display:'Literata',Georgia,'Times New Roman',serif;
+  --font-ui:'Figtree',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0C1514;
+    --surface:#142120;
+    --ink:#E4EEEB;
+    --muted:#94A9A3;
+    --line:#233633;
+    --accent:#5DBFC4;
+    --accent-ink:#06201F;
+    --accent-soft:#143638;
+    --gold:#E0B04F;
+    --on-gold:#1B1405;
+    --good:#6CC592;
+    --good-soft:#163425;
+    --bad:#EE8872;
+    --bad-soft:#3A201A;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.3);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0C1514;
+  --surface:#142120;
+  --ink:#E4EEEB;
+  --muted:#94A9A3;
+  --line:#233633;
+  --accent:#5DBFC4;
+  --accent-ink:#06201F;
+  --accent-soft:#143638;
+  --gold:#E0B04F;
+  --on-gold:#1B1405;
+  --good:#6CC592;
+  --good-soft:#163425;
+  --bad:#EE8872;
+  --bad-soft:#3A201A;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.3);
+  color-scheme:dark;
+}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{background:var(--bg);color:var(--ink);font-family:var(--font-ui);font-size:16px;line-height:1.45;padding-inline:16px;-webkit-text-size-adjust:100%}
+button{font:inherit;color:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent}
+button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+button:active:not(:disabled){transform:scale(.985)}
+h1,h2,p,ul{margin:0}
+.app{max-width:460px;margin-inline:auto;min-height:100%;display:flex;flex-direction:column}
+#view{flex:1;display:flex;flex-direction:column;min-width:0}
+
+/* type */
+.display{font-family:var(--font-display);font-weight:500;font-size:clamp(2rem,9vw,2.6rem);line-height:1.08;letter-spacing:-.02em;text-wrap:balance}
+.display.sm{font-size:clamp(1.6rem,7vw,2rem)}
+.lead{color:var(--muted);margin-top:.6rem;text-wrap:pretty}
+.eyebrow{font-size:.75rem;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.fine{font-size:.8125rem;color:var(--muted);text-wrap:pretty}
+.phrase{font-family:var(--font-display);font-weight:500;font-size:clamp(2.1rem,10vw,2.9rem);line-height:1.1;letter-spacing:-.015em;overflow-wrap:anywhere;text-wrap:balance}
+.phrase.en-phrase{font-size:clamp(1.5rem,7vw,2rem);font-weight:400}
+.resp{font-size:1rem;color:var(--muted);letter-spacing:.02em}
+.en{font-size:1.25rem;font-weight:600}
+.prompt{font-weight:600;font-size:1.0625rem}
+.hint{color:var(--muted);font-size:.9375rem;text-wrap:pretty}
+.link{background:none;border:0;color:var(--accent);text-decoration:underline;padding:10px 0;font-weight:600}
+
+/* home */
+.top{display:flex;justify-content:space-between;align-items:center;padding-block:14px 4px}
+.brand{font-family:var(--font-display);font-weight:600;font-size:1.25rem;letter-spacing:-.01em}
+.streak{display:inline-flex;align-items:center;gap:8px;font-size:.8125rem;color:var(--muted)}
+.streak::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--gold)}
+.hello{padding-block:18px 6px}
+.today{display:grid;gap:8px;margin-block:14px 6px}
+.today-row{display:flex;justify-content:space-between;gap:12px;font-size:.875rem;color:var(--muted)}
+.meter{height:8px;border-radius:99px;background:var(--line);overflow:hidden}
+.meter>span{display:block;height:100%;background:var(--gold);border-radius:inherit;transition:width .4s ease}
+.nudge{display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--accent-soft);border-radius:16px;padding:14px 16px;margin-top:14px}
+.nudge strong{display:block}
+.nudge .btn{min-height:44px;padding-inline:16px;flex:none}
+.unit-head{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin-top:26px}
+.unit-head h2{font-family:var(--font-display);font-weight:500;font-size:1.75rem;line-height:1.1;letter-spacing:-.01em}
+.unit-head p{color:var(--muted);font-size:.9375rem}
+.arch{width:112px;height:42px;color:var(--accent);flex:none}
+.path{list-style:none;padding:0;margin-top:10px}
+.node{display:grid;grid-template-columns:44px minmax(0,1fr) auto;align-items:center;gap:12px;width:100%;text-align:left;background:transparent;border:0;border-top:1px solid var(--line);padding:14px 4px;min-height:72px}
+.path li:first-child .node{border-top:0}
+.node.current{background:var(--surface);border:1.5px solid var(--accent);border-radius:16px;padding:14px 12px;box-shadow:var(--shadow)}
+.node-mark{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:var(--accent-soft);color:var(--accent)}
+.node.done .node-mark{background:var(--accent);color:var(--accent-ink)}
+.node.locked{opacity:.6;cursor:default}
+.node.locked .node-mark{background:var(--line);color:var(--muted)}
+.node-bs{display:block;font-family:var(--font-display);font-size:1.25rem;font-weight:500;line-height:1.2}
+.node-en{display:block;font-size:.875rem;color:var(--muted)}
+.node-cta{font-size:.875rem;font-weight:600;color:var(--accent)}
+.foot{display:grid;gap:12px;padding-block:28px 20px}
+.foot .link{justify-self:start;font-size:.8125rem;color:var(--muted);font-weight:500}
+
+/* tabs */
+.tabs{position:sticky;bottom:0;display:grid;grid-template-columns:repeat(3,1fr);gap:8px;background:var(--bg);border-top:1px solid var(--line);padding:8px 0 calc(8px + env(safe-area-inset-bottom,0px));margin-top:auto}
+.tab{position:relative;display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px;border:0;background:none;color:var(--muted);font-size:.75rem;font-weight:600;border-radius:12px}
+.tab[aria-current="page"]{color:var(--accent)}
+.badge{position:absolute;top:0;left:calc(50% + 8px);min-width:18px;height:18px;padding:0 5px;border-radius:9px;background:var(--gold);color:var(--on-gold);font-size:.6875rem;font-weight:700;display:grid;place-items:center}
+
+/* lesson shell */
+.lesson{display:flex;flex-direction:column;flex:1;min-height:0}
+.lesson-top{display:flex;align-items:center;gap:12px;padding-block:14px 8px}
+.icon-btn{width:40px;height:40px;border-radius:50%;border:0;background:transparent;color:var(--muted);display:grid;place-items:center;flex:none}
+.bar{flex:1;height:10px;border-radius:99px;background:var(--line);overflow:hidden}
+.bar>span{display:block;height:100%;background:var(--accent);border-radius:inherit;transition:width .35s ease}
+.stage{flex:1;display:flex;flex-direction:column;gap:18px;padding-block:12px 24px}
+.big{display:grid;gap:12px;justify-items:start}
+.center{justify-items:center;text-align:center}
+.play-row{display:flex;gap:8px;flex-wrap:wrap}
+.play{display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border-radius:999px;border:1.5px solid var(--accent);background:var(--accent-soft);color:var(--accent);font-weight:600;min-height:44px}
+.play.ghost{background:transparent;border-color:var(--line);color:var(--muted)}
+.intro{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:24px 20px;display:grid;gap:12px;box-shadow:var(--shadow)}
+.note{color:var(--muted);padding-top:12px;border-top:1px solid var(--line);text-wrap:pretty}
+.reveal{display:grid;gap:10px;background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:18px}
+.reveal .phrase{font-size:clamp(1.75rem,8vw,2.3rem)}
+
+.sounds{list-style:none;padding:0;display:grid;gap:0}
+.sounds li{display:grid;grid-template-columns:52px minmax(0,1fr);gap:12px;align-items:center;padding:12px 0;border-top:1px solid var(--line)}
+.sounds li:first-child{border-top:0}
+.ltr{font-family:var(--font-display);font-size:2rem;font-weight:500;text-align:center;color:var(--accent)}
+.snd{font-size:.9375rem}
+.ex{display:inline-flex;align-items:center;gap:8px;margin-top:4px;padding:6px 12px;min-height:36px;border-radius:999px;border:1px solid var(--line);background:var(--surface);font-size:.875rem}
+.ex em{font-style:normal;font-family:var(--font-display);font-size:1rem}
+.ex span{color:var(--muted)}
+
+.opts{display:grid;gap:10px}
+.opt{text-align:left;min-height:56px;padding:14px 16px;border-radius:14px;border:1.5px solid var(--line);background:var(--surface);font-size:1.0625rem}
+.opt.bs{font-family:var(--font-display);font-size:1.25rem}
+.opt.sel{border-color:var(--accent);background:var(--accent-soft)}
+.opt.correct{border-color:var(--good);background:var(--good-soft)}
+.opt.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.opt:disabled{cursor:default}
+
+.answer{min-height:72px;border-radius:14px;border:1.5px dashed var(--line);padding:10px;display:flex;flex-wrap:wrap;gap:8px;align-content:flex-start}
+.answer.ok{border-color:var(--good);border-style:solid;background:var(--good-soft)}
+.answer.no{border-color:var(--bad);border-style:solid;background:var(--bad-soft)}
+.tiles{display:flex;flex-wrap:wrap;gap:8px}
+.tile{font-family:var(--font-display);font-size:1.15rem;padding:10px 14px;min-height:44px;border-radius:12px;border:1.5px solid var(--line);background:var(--surface)}
+.tile.in{border-color:var(--accent)}
+.tile.used{opacity:0;pointer-events:none}
+
+.match{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px}
+.col{display:grid;gap:10px;align-content:start}
+.mt{min-height:56px;padding:10px 12px;border-radius:14px;border:1.5px solid var(--line);background:var(--surface);text-align:left;font-family:var(--font-display);font-size:1.0625rem;overflow-wrap:anywhere}
+.mt.en{font-family:var(--font-ui);font-size:.9375rem}
+.mt.sel{border-color:var(--accent);background:var(--accent-soft)}
+.mt.matched{border-color:var(--good);background:var(--good-soft);opacity:.75}
+.mt.wrong{border-color:var(--bad);background:var(--bad-soft)}
+
+.dock{position:sticky;bottom:0;margin-inline:-16px;padding:14px 16px calc(14px + env(safe-area-inset-bottom,0px));background:var(--bg);border-top:1px solid var(--line);display:grid;gap:12px}
+.dock.ok{background:var(--good-soft)}
+.dock.no{background:var(--bad-soft)}
+.dock-hint{color:var(--muted);text-align:center;font-size:.9375rem;padding-block:14px}
+.fb{display:flex;gap:12px;align-items:flex-start}
+.fb strong{display:block;font-size:1.0625rem}
+.fb span.d{color:var(--muted);font-size:.9375rem}
+.fb-ic{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;flex:none;color:#fff}
+.dock.ok .fb-ic{background:var(--good)}
+.dock.no .fb-ic{background:var(--bad)}
+.btn{min-height:52px;padding:0 20px;border-radius:14px;border:1.5px solid transparent;font-weight:700;font-size:1rem;display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.btn.wide{width:100%}
+.btn.primary{background:var(--accent);color:var(--accent-ink)}
+.btn.primary:disabled{background:var(--line);color:var(--muted);cursor:not-allowed}
+.btn.secondary{background:var(--surface);border-color:var(--line);color:var(--ink)}
+.btn.stack{flex-direction:column;gap:0;padding:8px 12px;line-height:1.25}
+.btn.stack small{font-weight:500;font-size:.75rem;opacity:.85}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+
+/* result and review list */
+.result{display:flex;flex-direction:column;gap:18px;padding-block:32px 24px;flex:1}
+.stats{display:flex;gap:24px}
+.stat strong{display:block;font-family:var(--font-display);font-size:1.75rem;font-weight:500;line-height:1.1;font-variant-numeric:tabular-nums}
+.stat span{font-size:.8125rem;color:var(--muted)}
+.plist{list-style:none;padding:0}
+.prow{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px 12px;align-items:center;padding:12px 0;border-top:1px solid var(--line)}
+.prow:first-child{border-top:0}
+.prow b{font-family:var(--font-display);font-weight:500;font-size:1.125rem;display:block}
+.prow small{display:block;color:var(--muted);font-size:.875rem}
+.pips{display:flex;gap:3px;justify-content:flex-end}
+.pip{width:14px;height:6px;border-radius:3px;background:var(--line)}
+.pip.on{background:var(--accent)}
+.sec{display:grid;gap:6px;padding-block:20px 6px}
+.sec h2{font-family:var(--font-display);font-weight:500;font-size:1.5rem}
+.actions{display:grid;gap:10px;margin-top:auto}
+
+/* speak: repeat-after-me session */
+.say-stage{justify-content:center}
+.turn-card{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:24px 20px;display:grid;gap:14px;box-shadow:var(--shadow)}
+.turn-card.turn{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft),var(--shadow)}
+.status{display:inline-flex;align-items:center;gap:8px;font-weight:700;font-size:.9375rem;color:var(--muted);letter-spacing:.01em}
+.status::before{content:"";width:10px;height:10px;border-radius:50%;background:var(--muted)}
+.status.turn{color:var(--accent)}
+.status.turn::before{background:var(--accent)}
+.gapbar{height:8px;border-radius:99px;background:var(--line);overflow:hidden}
+.gapbar>span{display:block;height:100%;width:0;background:var(--accent);border-radius:inherit;animation:gapfill var(--gap,3s) linear forwards}
+@keyframes gapfill{to{width:100%}}
+.gapbar.idle>span{animation:none;width:0}
+.set-count{font-variant-numeric:tabular-nums}
+.opt-wrap{margin-block:4px 14px}
+.opt-row{display:flex;align-items:center;justify-content:space-between;gap:16px;width:100%;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:14px 16px;min-height:64px}
+.opt-row strong{display:block;font-weight:700}
+.opt-row small{display:block;color:var(--muted);font-size:.8125rem;margin-top:2px;text-wrap:pretty}
+.switch{flex:none;width:50px;height:30px;border-radius:99px;background:var(--bg);border:1.5px solid var(--muted);position:relative;transition:background .2s,border-color .2s}
+.switch::after{content:"";position:absolute;top:3px;left:3px;width:21px;height:21px;border-radius:50%;background:var(--muted);transition:transform .2s,background .2s}
+.opt-row[aria-checked="true"] .switch{background:var(--accent);border-color:var(--accent)}
+.opt-row[aria-checked="true"] .switch::after{transform:translateX(20px);background:var(--accent-ink)}
+.rec-line{display:flex;align-items:center;gap:10px;font-weight:700;font-size:.875rem;color:var(--bad)}
+.rec-dot{flex:none;width:10px;height:10px;border-radius:50%;background:var(--bad)}
+.lvl{flex:1;height:6px;border-radius:99px;background:var(--line);overflow:hidden;min-width:60px}
+.lvl>i{display:block;height:100%;width:0;background:var(--accent);border-radius:inherit}
+.mini-h{font-family:var(--font-display);font-weight:500;font-size:1.25rem;margin-bottom:6px}
+.hear{list-style:none;padding:0;margin:0}
+.hear li{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:8px 0;border-top:1px solid var(--line)}
+.hear li:first-child{border-top:0}
+.hear-bs{font-family:var(--font-display);font-size:1.0625rem;min-width:0;overflow-wrap:anywhere}
+.hear-btns{display:flex;gap:8px;flex:none}
+.hear .play{padding:8px 14px}
+@media (prefers-reduced-motion: no-preference){ .rec-dot{animation:recpulse 1.4s ease-in-out infinite} }
+@keyframes recpulse{50%{opacity:.35}}
+@media (prefers-reduced-motion: reduce){ .gapbar{display:none} }
+
+.scrim{position:fixed;inset:0;background:rgba(0,0,0,.45);display:grid;align-items:end;z-index:10}
+.sheet{background:var(--surface);border-radius:20px 20px 0 0;padding:20px 16px calc(20px + env(safe-area-inset-bottom,0px));max-width:460px;margin-inline:auto;width:100%;display:grid;gap:12px}
+.sheet h2{font-family:var(--font-display);font-weight:500;font-size:1.375rem}
+
+@media (prefers-reduced-motion: reduce){
+  *{transition:none!important;animation:none!important}
+}
+</style>
+</head>
+<body>
+
+<div class="app" id="app">
+  <main id="view" aria-live="polite"></main>
+  <nav class="tabs" id="tabs" aria-label="Main sections"></nav>
+</div>
+
+<script>
+(function(){
+'use strict';
+
+/* ---------- content: Unit 1, standard Bosnian (ijekavian, Latin script) ---------- */
+var LESSONS=[
+  {id:'l1',bs:'Zdravo!',en:'Hello and goodbye',mins:5,
+   tip:{title:'The sounds of Bosnian',lead:'Bosnian is spelled the way it sounds, and every letter is pronounced. These six are the ones to learn first.',rows:[
+     {l:'j',s:'like “y” in yes',w:'jutro',g:'morning'},
+     {l:'č',s:'like “ch” in church',w:'čaj',g:'tea'},
+     {l:'ć',s:'a softer “ch”, tongue pushed forward',w:'ćao',g:'hi'},
+     {l:'š',s:'like “sh” in ship',w:'škola',g:'school'},
+     {l:'ž',s:'like the “s” in measure',w:'žena',g:'woman'},
+     {l:'đ',s:'a soft “j”, as in adjust',w:'doviđenja',g:'goodbye'}]},
+   items:[
+     {id:'zdravo',bs:'Zdravo',en:'Hello',say:'ZDRAH-vo',note:'The all-purpose hello. Fine with anyone.'},
+     {id:'dobar-dan',bs:'Dobar dan',en:'Good day',say:'DO-bar dahn',note:'Heard from late morning until evening.'},
+     {id:'dobro-jutro',bs:'Dobro jutro',en:'Good morning',say:'DO-bro YOO-tro',note:'Used until about mid-morning.'},
+     {id:'cao',bs:'Ćao',en:'Hi / bye',say:'chow',note:'Casual, with friends and family. Works for both hello and goodbye.'},
+     {id:'hvala',bs:'Hvala',en:'Thank you',say:'HVAH-la',note:'Add “lijepo” for “thank you very much”.'},
+     {id:'molim',bs:'Molim',en:'Please / you’re welcome',say:'MO-leem',note:'One word that covers both please and you’re welcome.'},
+     {id:'dovidjenja',bs:'Doviđenja',en:'Goodbye',say:'do-VEE-jen-ya',note:'Literally “until we meet again”.'}
+   ]},
+  {id:'l2',bs:'Kako si?',en:'How are you?',mins:4,
+   items:[
+     {id:'kako-si',bs:'Kako si?',en:'How are you?',say:'KAH-ko see',note:'To friends and family. To someone older, or formally, say “Kako ste?”.'},
+     {id:'dobro-sam',bs:'Dobro sam.',en:'I’m well.',say:'DO-bro sahm',note:'Literally “well I am”.'},
+     {id:'nije-lose',bs:'Nije loše.',en:'Not bad.',say:'NEE-yeh LO-sheh',note:'A very common, relaxed answer.'},
+     {id:'a-ti',bs:'A ti?',en:'And you?',say:'ah TEE',note:'Short and useful. Keeps the conversation going.'},
+     {id:'hvala-dobro-sam',bs:'Hvala, dobro sam.',en:'Thanks, I’m well.',say:'HVAH-la, DO-bro sahm',note:'The polite full answer.'}
+   ]},
+  {id:'l3',bs:'Kako se zoveš?',en:'Introductions',mins:4,
+   items:[
+     {id:'kako-se-zoves',bs:'Kako se zoveš?',en:'What’s your name?',say:'KAH-ko seh ZO-vesh',note:'Literally “how do you call yourself?”.'},
+     {id:'zovem-se-ana',bs:'Zovem se Ana.',en:'My name is Ana.',say:'ZO-vem seh AH-na',note:'Swap in your own name.'},
+     {id:'drago-mi-je',bs:'Drago mi je.',en:'Nice to meet you.',say:'DRAH-go mee yeh',note:'Literally “it is dear to me”.'},
+     {id:'ja-sam-marko',bs:'Ja sam Marko.',en:'I am Marko.',say:'yah sahm MAR-ko',note:'Another way to introduce yourself.'}
+   ]},
+  {id:'l4',unit:2,bs:'Porodica',en:'Family',mins:5,
+   items:[
+     {id:'porodica',bs:'Porodica',en:'Family',say:'PO-ro-dee-tsa',note:'The “c” sounds like “ts” in cats.'},
+     {id:'mama',bs:'Mama',en:'Mum / Mom',say:'MAH-ma',note:'The everyday word. “Majka” is the more formal one.'},
+     {id:'tata',bs:'Tata',en:'Dad',say:'TAH-ta',note:'The everyday word. “Otac” is the more formal one.'},
+     {id:'brat',bs:'Brat',en:'Brother',say:'braht',note:'Friends often call each other “brate” too.'},
+     {id:'sestra',bs:'Sestra',en:'Sister',say:'SEHS-tra'},
+     {id:'baka',bs:'Baka',en:'Grandmother',say:'BAH-ka'},
+     {id:'djed',bs:'Djed',en:'Grandfather',say:'jed',note:'Written “dj”, but it is the same soft sound as “đ” in doviđenja.'}
+   ]},
+  {id:'l5',unit:2,bs:'Moja porodica',en:'My family',mins:4,
+   items:[
+     {id:'ovo-je-moja-mama',bs:'Ovo je moja mama.',en:'This is my mum.',say:'O-vo yeh MO-ya MAH-ma',note:'“Moja” goes with feminine words, “moj” with masculine ones.'},
+     {id:'ovo-je-moj-tata',bs:'Ovo je moj tata.',en:'This is my dad.',say:'O-vo yeh moy TAH-ta',note:'“Tata” ends in -a but is masculine, so it takes “moj”.'},
+     {id:'imam-brata',bs:'Imam brata.',en:'I have a brother.',say:'EE-mam BRAH-ta',note:'After “imam” (I have), “brat” becomes “brata”. Many words change like this.'},
+     {id:'imam-sestru',bs:'Imam sestru.',en:'I have a sister.',say:'EE-mam SEHS-troo',note:'Here “sestra” becomes “sestru”. Words ending in -a often take -u.'}
+   ]},
+  {id:'l6',unit:2,bs:'Brojevi',en:'Numbers 1 to 10',mins:6,
+   items:[
+     {id:'jedan',bs:'Jedan',en:'One (1)',say:'YEH-dahn',note:'Before a noun it changes: “jedna” (feminine), “jedno” (neuter).'},
+     {id:'dva',bs:'Dva',en:'Two (2)',say:'dvah',note:'With feminine words it becomes “dvije”, as in “dvije sestre”.'},
+     {id:'tri',bs:'Tri',en:'Three (3)',say:'tree',note:'Like “tree”, with a quick tapped “r”.'},
+     {id:'cetiri',bs:'Četiri',en:'Four (4)',say:'CHEH-tee-ree',note:'It starts with the “č” from čaj.'},
+     {id:'pet',bs:'Pet',en:'Five (5)',say:'peht'},
+     {id:'sest',bs:'Šest',en:'Six (6)',say:'shehst',note:'It starts with the “š” from škola.'},
+     {id:'sedam',bs:'Sedam',en:'Seven (7)',say:'SEH-dahm',note:'Easy to mix up with “osam”.'},
+     {id:'osam',bs:'Osam',en:'Eight (8)',say:'O-sahm',note:'Easy to mix up with “sedam”.'},
+     {id:'devet',bs:'Devet',en:'Nine (9)',say:'DEH-veht'},
+     {id:'deset',bs:'Deset',en:'Ten (10)',say:'DEH-seht'}
+   ]}
+];
+var UNITS=[{n:1,bs:'Pozdravi',en:'Greetings'},{n:2,bs:'Porodica i brojevi',en:'Family and numbers'}];
+var ITEM={};
+LESSONS.forEach(function(L){ (L.items||[]).forEach(function(it){ it.lesson=L.id; ITEM[it.id]=it; }); });
+
+/* ---------- helpers ---------- */
+var DAY=86400000;
+var INTERVALS=[0,1,3,7,16,35];           /* days until next review, by new strength 0..5 */
+var GOAL=20;                              /* practice questions per day, about 10 minutes */
+function $(s,r){ return (r||document).querySelector(s); }
+function esc(s){ return String(s).replace(/[&<>"']/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+function shuffle(a){ a=a.slice(); for(var i=a.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=a[i]; a[i]=a[j]; a[j]=t; } return a; }
+function sample(a,n){ return shuffle(a).slice(0,n); }
+function chunk(a,n){ var r=[]; for(var i=0;i<a.length;i+=n) r.push(a.slice(i,i+n)); return r; }
+function dayKey(d){ d=d||new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
+function fmtSpan(ms){
+  var m=Math.round(ms/60000);
+  if(m<60) return Math.max(1,m)+' min';
+  var h=Math.round(m/60);
+  if(h<36) return h+' h';
+  var d=Math.round(ms/DAY);
+  if(d<14) return d+(d===1?' day':' days');
+  return Math.round(d/7)+' weeks';
+}
+
+var I={
+  speaker:'<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/></svg>',
+  close:'<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>',
+  check:'<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>',
+  x:'<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M7 7l10 10M17 7 7 17"/></svg>',
+  lock:'<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>',
+  play:'<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13l11-6.5z"/></svg>',
+  learn:'<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5V5a2 2 0 0 1 2-2h14v16H6a2 2 0 0 0-2 2z"/><path d="M4 19.5a2 2 0 0 0 2 2h14"/></svg>',
+  review:'<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 0 1 15.5-6.3L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-15.5 6.3L3 16"/><path d="M3 21v-5h5"/></svg>',
+  speak:'<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1.1-4.6A8 8 0 1 1 21 12z"/><path d="M8.5 12h.01M12 12h.01M15.5 12h.01"/></svg>',
+  arch:'<svg class="arch" viewBox="0 0 112 42" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 34Q56 -14 94 34"/><path d="M30 34Q56 2 82 34"/><path d="M6 34h20M86 34h20"/><path d="M2 40q7-4 14 0t14 0 14 0 14 0 14 0 14 0 14 0 12 0" stroke-width="1.6" opacity=".6"/></svg>'
+};
+
+/* ---------- audio: recorded clips first, browser text-to-speech as a fallback ---------- */
+var TTS=typeof window!=='undefined' && 'speechSynthesis' in window && typeof window.SpeechSynthesisUtterance!=='undefined';
+var CLIP=typeof window!=='undefined' && typeof window.Audio==='function';
+var AUDIO=TTS||CLIP;
+var VOICE=null;
+/* lower-case Bosnian text -> clip file. Every lesson phrase has one (named by its id), plus the sound-guide words. */
+var CLIPS={};
+Object.keys(ITEM).forEach(function(id){ CLIPS[ITEM[id].bs.toLowerCase()]='audio/'+id+'.mp3'; });
+[['jutro','jutro'],['čaj','caj'],['škola','skola'],['žena','zena']].forEach(function(p){ CLIPS[p[0]]='audio/'+p[1]+'.mp3'; });
+var SLOW=0.7, player=null, playId=0;   /* one shared audio element: phones only let an element that a tap has started play again on its own */
+function pickVoice(){
+  if(!TTS) return;
+  var vs=[]; try{ vs=window.speechSynthesis.getVoices()||[]; }catch(e){}
+  if(!vs.length) return;
+  function by(p){ for(var i=0;i<vs.length;i++){ var l=(vs[i].lang||'').toLowerCase().replace('_','-'); if(l.indexOf(p)===0) return vs[i]; } return null; }
+  VOICE=by('bs')||by('hr')||by('sr')||null;
+}
+function stopAudio(){
+  playId++;                                   /* anything still waiting on the old playback is now stale */
+  try{ if(player){ player.pause(); player.onended=null; player.onerror=null; player.onplaying=null; } }catch(e){}
+  if(TTS){ try{ window.speechSynthesis.cancel(); }catch(e){} }
+}
+/* done(ms) is called once, with how long the sound took, when this playback ends by itself.
+   It is never called if another sound starts first or the page stops the audio. */
+function once(f){ if(!f) return null; var fired=false; return function(ms){ if(!fired){ fired=true; f(ms); } }; }
+function finish(id,done,t0){ if(id===playId && done) done(Math.max(0,Date.now()-t0)); }
+function tts(text,rate,id,done){
+  var t0=Date.now();
+  if(!TTS){ finish(id,done,t0); return; }
+  try{
+    var u=new window.SpeechSynthesisUtterance(text);
+    if(VOICE){ u.voice=VOICE; u.lang=VOICE.lang; } else { u.lang='bs-BA'; }
+    u.rate=rate||0.9;
+    u.onend=function(){ finish(id,done,t0); };
+    u.onerror=function(){ finish(id,done,t0); };
+    window.speechSynthesis.speak(u);
+  }catch(e){ finish(id,done,t0); }
+}
+/* plays one file through the shared element; onfail runs if it cannot load or play */
+function playSrc(url,r,onfail,done){
+  var id=playId;
+  try{
+    var a=player||(player=new window.Audio()), t0=Date.now();
+    try{ a.preload='auto'; a.defaultPlaybackRate=r; a.preservesPitch=true; a.mozPreservesPitch=true; a.webkitPreservesPitch=true; }catch(e){}
+    a.onerror=function(){ if(id===playId) onfail(); };
+    a.onplaying=function(){ t0=Date.now(); };
+    a.onended=function(){ finish(id,done,t0); };
+    a.onloadedmetadata=function(){ try{ a.playbackRate=r; }catch(e){} };
+    a.src=url;
+    try{ a.playbackRate=r; }catch(e){}
+    var p=a.play();
+    if(p && typeof p.catch==='function') p.catch(function(err){
+      if(id===playId && err && err.name!=='AbortError' && err.name!=='NotAllowedError') onfail();
+    });
+  }catch(e){ onfail(); }
+}
+/* rate below 0.8 means "slow": clips are played at SLOW speed, the browser voice at the rate given */
+function speak(text,rate,done){
+  if(!AUDIO) return;
+  stopAudio();
+  done=once(done);
+  var id=playId, url=CLIPS[String(text).toLowerCase()], slow=!!rate && rate<0.8;
+  if(!url || !CLIP){ tts(text,rate,id,done); return; }
+  playSrc(url,slow?SLOW:1,function(){ tts(text,rate,id,done); },done);
+}
+/* the learner's own recording */
+function playTake(url,done){
+  stopAudio(); done=once(done);
+  if(!CLIP){ if(done) done(0); return; }
+  playSrc(url,1,function(){ if(done) done(0); },done);
+}
+/* A tap starts this element once; after that the page may start it again by itself (needed on phones). */
+var SILENT='data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAA=';
+function unlockPlayer(){
+  if(!CLIP) return;
+  stopAudio();
+  try{ var a=player||(player=new window.Audio()); a.src=SILENT; var p=a.play(); if(p && typeof p.catch==='function') p.catch(function(){}); }catch(e){}
+}
+function voiceNote(){
+  if(!AUDIO) return 'Audio is not available in this browser. Lessons still work; the listening questions are skipped.';
+  if(CLIP) return 'Audio is an AI-generated voice (ElevenLabs “Sini”), picked from the Croatian voices, so a few sounds may differ slightly from Bosnian. The finished app will use recordings of native Bosnian speakers.';
+  if(VOICE){
+    if(/^bs/i.test(VOICE.lang)) return 'Prototype audio uses the “'+VOICE.name+'” voice on your device. The finished app will use recordings of Bosnian speakers.';
+    return 'No Bosnian voice was found, so prototype audio uses a “'+VOICE.name+'” voice ('+VOICE.lang+'). It will sound close but not exact. The finished app will use recordings of Bosnian speakers.';
+  }
+  return 'Prototype audio uses your device’s default voice, which may not sound Bosnian. The finished app will use recordings of Bosnian speakers.';
+}
+function playBtns(text){
+  if(!AUDIO) return '';
+  var t=esc(text);
+  return '<button class="play" data-act="say" data-text="'+t+'" aria-label="Play audio">'+I.speaker+'<span>Listen</span></button>'+
+         '<button class="play ghost" data-act="slow" data-text="'+t+'" aria-label="Play slowly">Slow</button>';
+}
+
+/* ---------- saved progress (this browser only) ---------- */
+var KEY='hajde.prototype.v1';
+function fresh(){ return {done:{},cards:{},days:[],today:{date:'',n:0}}; }
+function load(){
+  try{ var raw=window.localStorage.getItem(KEY); if(raw){ var s=JSON.parse(raw); if(s && s.cards) return s; } }catch(e){}
+  return fresh();
+}
+var state=load();
+function save(){ try{ window.localStorage.setItem(KEY,JSON.stringify(state)); }catch(e){} }
+function markDay(){ var k=dayKey(); if(state.days.indexOf(k)<0) state.days.push(k); }
+function bumpReps(n){
+  var k=dayKey();
+  if(state.today.date!==k) state.today={date:k,n:0};
+  state.today.n+=n; markDay(); save();
+}
+function todayReps(){ return state.today.date===dayKey()?state.today.n:0; }
+function streak(){
+  var set={}; state.days.forEach(function(d){ set[d]=1; });
+  var d=new Date(), n=0;
+  if(!set[dayKey(d)]) d.setDate(d.getDate()-1);
+  while(set[dayKey(d)]){ n++; d.setDate(d.getDate()-1); }
+  return n;
+}
+function dueIds(){
+  var now=Date.now();
+  return Object.keys(state.cards).filter(function(id){ return ITEM[id] && state.cards[id].due<=now; });
+}
+
+/* ---------- exercise generation ---------- */
+function tokens(s){ return s.replace(/[.,!?]/g,'').split(/\s+/); }
+function isBuildable(it){ var t=tokens(it.bs); return t.length>=2 && t.length<=5; }
+function mcq(kind,it,lesson){
+  var others=shuffle(lesson.items.filter(function(x){ return x.id!==it.id; })).slice(0,2);
+  var toBs=(kind==='translate');
+  var opts=shuffle([it].concat(others)).map(function(x){ return {id:x.id,label:toBs?x.bs:x.en,correct:x.id===it.id}; });
+  return {type:kind,item:it,opts:opts};
+}
+function buildStep(it,lesson){
+  var ans=tokens(it.bs), low=ans.map(function(a){ return a.toLowerCase(); }), pool=[];
+  lesson.items.forEach(function(x){
+    if(x.id===it.id) return;
+    tokens(x.bs).forEach(function(w){
+      var lw=w.toLowerCase();
+      if(low.indexOf(lw)<0 && pool.map(function(p){ return p.toLowerCase(); }).indexOf(lw)<0) pool.push(w);
+    });
+  });
+  var bank=shuffle(ans.concat(shuffle(pool).slice(0,2))).map(function(w,i){ return {k:'t'+i,w:w}; });
+  return {type:'build',item:it,ans:ans,bank:bank};
+}
+function makeSteps(lesson){
+  var items=lesson.items, steps=[];
+  if(lesson.tip) steps.push({type:'tip',tip:lesson.tip});
+  chunk(items,3).forEach(function(b){
+    b.forEach(function(it){ steps.push({type:'intro',item:it}); });
+    b.forEach(function(it,i){ steps.push(mcq((i%2===1 && AUDIO)?'listen':'meaning',it,lesson)); });
+  });
+  steps.push({type:'match',items:sample(items,Math.min(4,items.length))});
+  shuffle(items).slice(0,3).forEach(function(it){ steps.push(mcq('translate',it,lesson)); });
+  shuffle(items.filter(isBuildable)).slice(0,2).forEach(function(it){ steps.push(buildStep(it,lesson)); });
+  if(AUDIO) steps.push(mcq('listen',shuffle(items)[0],lesson));
+  items.slice().sort(function(a,b){ return b.bs.length-a.bs.length; }).slice(0,3).forEach(function(it){ steps.push({type:'say',item:it}); });
+  return steps;
+}
+
+/* ---------- app state ---------- */
+var app=document.getElementById('app'), view=document.getElementById('view'), tabs=document.getElementById('tabs');
+var run=null, rev=null, sh=null, shTimer=null, ui={tab:'learn',quit:false,resetArm:false};
+function newCur(){ return {sel:null,checked:false,ok:null,placed:[],mSel:null,matched:[],mistakes:0,flash:null,done:false,showText:false}; }
+
+function renderRoot(){
+  tabs.hidden=!!(run||rev||sh);
+  view.setAttribute('aria-live',sh?'off':'polite');   /* a repeat-after-me session redraws every few seconds */
+  if(run) return renderLesson();
+  if(rev) return renderReviewCard();
+  if(sh) return renderShadow();
+  if(ui.tab==='review') renderReviewHome(); else if(ui.tab==='speak') renderSpeakHome(); else renderHome();
+  renderTabs();
+}
+function renderTabs(){
+  var n=dueIds().length;
+  tabs.innerHTML=
+    '<button class="tab" data-act="tab" data-tab="learn" '+(ui.tab==='learn'?'aria-current="page"':'')+'>'+I.learn+'<span>Learn</span></button>'+
+    '<button class="tab" data-act="tab" data-tab="speak" '+(ui.tab==='speak'?'aria-current="page"':'')+'>'+I.speak+'<span>Speak</span></button>'+
+    '<button class="tab" data-act="tab" data-tab="review" '+(ui.tab==='review'?'aria-current="page"':'')+'>'+I.review+'<span>Review</span>'+(n?'<span class="badge" aria-label="'+n+' due">'+n+'</span>':'')+'</button>';
+}
+
+/* ---------- home ---------- */
+function firstOpen(){
+  for(var i=0;i<LESSONS.length;i++){ if(!LESSONS[i].locked && !state.done[LESSONS[i].id]) return LESSONS[i].id; }
+  return null;
+}
+function renderHome(){
+  var due=dueIds().length, st=streak(), n=Math.min(todayReps(),GOAL), cur=firstOpen();
+  function node(L){
+    var done=!!state.done[L.id], isCur=(L.id===cur), cls=L.locked?'locked':(done?'done':(isCur?'current':''));
+    var mark=L.locked?I.lock:(done?I.check:I.play);
+    var sub=L.locked?L.en+' · coming next':L.en+' · '+L.items.length+(L.items.length===1?' phrase':' phrases')+' · about '+L.mins+' min';
+    var cta=L.locked?'':(done?'Practise':(isCur?'Start':'Open'));
+    return '<li><button class="node '+cls+'" data-act="open" data-id="'+L.id+'" '+(L.locked?'disabled':'')+'>'+
+      '<span class="node-mark">'+mark+'</span>'+
+      '<span><span class="node-bs">'+esc(L.bs)+'</span><span class="node-en">'+esc(sub)+'</span></span>'+
+      '<span class="node-cta">'+cta+'</span></button></li>';
+  }
+  var path=UNITS.map(function(U){
+    var ls=LESSONS.filter(function(L){ return (L.unit||1)===U.n; });
+    return '<div class="unit-head"><div><p class="eyebrow">Unit '+U.n+'</p><h2>'+esc(U.bs)+'</h2><p>'+esc(U.en)+'</p></div>'+(U.n===1?I.arch:'')+'</div>'+
+      '<ul class="path">'+ls.map(node).join('')+'</ul>';
+  }).join('');
+  view.innerHTML=
+    '<header class="top"><span class="brand">Hajde</span><span class="streak">'+(st? st+(st===1?' day':' days')+' in a row':'Start a streak today')+'</span></header>'+
+    '<section class="hello"><h1 class="display">Dobro došli</h1>'+
+    '<p class="lead">Welcome. <i>Hajde</i> means “come on, let’s go”. Ten minutes a day is plenty.</p></section>'+
+    '<section class="today" aria-label="Today’s practice"><div class="today-row"><span>Today’s practice</span><span style="font-variant-numeric:tabular-nums">'+n+' of '+GOAL+' questions</span></div>'+
+    '<div class="meter" role="progressbar" aria-valuemin="0" aria-valuemax="'+GOAL+'" aria-valuenow="'+n+'"><span style="width:'+Math.round(n/GOAL*100)+'%"></span></div></section>'+
+    (due?'<div class="nudge"><div><strong>'+due+(due===1?' phrase is':' phrases are')+' ready to review</strong><span class="fine">A quick round keeps them from fading.</span></div><button class="btn primary" data-act="start-review">Review</button></div>':'')+
+    path+
+    '<footer class="foot"><p class="fine" id="voice-note">'+esc(voiceNote())+'</p>'+
+    '<button class="link" data-act="reset">'+(ui.resetArm?'Tap again to erase saved progress':'Reset demo progress')+'</button></footer>';
+}
+
+/* ---------- lesson player ---------- */
+function startLesson(id){
+  var L=null; LESSONS.forEach(function(x){ if(x.id===id) L=x; });
+  if(!L || L.locked) return;
+  run={lesson:L,steps:makeSteps(L),idx:0,right:0,wrong:0,weak:{},rq:{},cur:newCur(),finished:false};
+  ui.quit=false; renderRoot(); window.scrollTo(0,0);
+}
+function curStep(){ return run.steps[run.idx]; }
+function canCheck(s){ var c=run.cur; return s.type==='build'? c.placed.length>0 : c.sel!==null; }
+
+function stageHTML(s){
+  var c=run.cur, it=s.item;
+  switch(s.type){
+    case 'tip':
+      return '<p class="eyebrow">Before you start</p><h1 class="display sm">'+esc(s.tip.title)+'</h1><p class="lead" style="margin-top:0">'+esc(s.tip.lead)+'</p>'+
+        '<ul class="sounds">'+s.tip.rows.map(function(r){
+          return '<li><span class="ltr">'+esc(r.l)+'</span><div><div class="snd">'+esc(r.s)+'</div>'+
+            '<button class="ex" data-act="say" data-text="'+esc(r.w)+'" aria-label="Hear '+esc(r.w)+'">'+(AUDIO?I.speaker:'')+'<em>'+esc(r.w)+'</em><span>'+esc(r.g)+'</span></button></div></li>';
+        }).join('')+'</ul>';
+    case 'intro':
+      return '<p class="eyebrow">New phrase</p><div class="intro"><h1 class="phrase">'+esc(it.bs)+'</h1><p class="resp">/'+esc(it.say)+'/</p>'+
+        '<div class="play-row">'+playBtns(it.bs)+'</div><p class="en">'+esc(it.en)+'</p>'+(it.note?'<p class="note">'+esc(it.note)+'</p>':'')+'</div>';
+    case 'meaning':
+    case 'listen':
+    case 'translate':
+      var head;
+      if(s.type==='meaning') head='<p class="prompt">What does this mean?</p><div class="big"><h1 class="phrase">'+esc(it.bs)+'</h1><div class="play-row">'+playBtns(it.bs)+'</div></div>';
+      else if(s.type==='listen') head='<p class="prompt">Listen, then pick the meaning.</p><div class="big">'+(c.showText?'<h1 class="phrase">'+esc(it.bs)+'</h1>':'')+'<div class="play-row">'+playBtns(it.bs)+'</div>'+(c.showText?'':'<button class="link" data-act="showtext">Can’t hear it? Show the text</button>')+'</div>';
+      else head='<p class="prompt">How do you say…</p><div class="big"><h1 class="phrase en-phrase">“'+esc(it.en)+'”</h1></div>';
+      return head+'<div class="opts">'+s.opts.map(function(o){
+        var cls='opt'+(s.type==='translate'?' bs':'');
+        if(c.checked){ if(o.correct) cls+=' correct'; else if(c.sel===o.id) cls+=' wrong'; }
+        else if(c.sel===o.id) cls+=' sel';
+        return '<button class="'+cls+'" data-act="opt" data-id="'+esc(o.id)+'" aria-pressed="'+(c.sel===o.id)+'" '+(c.checked?'disabled':'')+'>'+esc(o.label)+'</button>';
+      }).join('')+'</div>';
+    case 'build':
+      var used={}; c.placed.forEach(function(k){ used[k]=1; });
+      var placed=c.placed.map(function(k){
+        var t=s.bank.filter(function(b){ return b.k===k; })[0];
+        return '<button class="tile in" data-act="unplace" data-k="'+k+'" '+(c.checked?'disabled':'')+'>'+esc(t.w)+'</button>';
+      }).join('');
+      var bank=s.bank.map(function(t){
+        return '<button class="tile'+(used[t.k]?' used':'')+'" data-act="place" data-k="'+t.k+'" '+((used[t.k]||c.checked)?'disabled':'')+'>'+esc(t.w)+'</button>';
+      }).join('');
+      return '<p class="prompt">Build it in Bosnian.</p><div class="big"><h1 class="phrase en-phrase">“'+esc(it.en)+'”</h1></div>'+
+        '<div class="answer'+(c.checked?(c.ok?' ok':' no'):'')+'" aria-label="Your answer">'+placed+'</div><div class="tiles">'+bank+'</div>';
+    case 'match':
+      if(!s.lo){ s.lo=shuffle(s.items.map(function(x){ return x.id; })); s.ro=shuffle(s.items.map(function(x){ return x.id; })); }
+      var L=s.lo.map(function(id){
+        var m=c.matched.indexOf(id)>=0;
+        return '<button class="mt'+(m?' matched':'')+(c.mSel===id?' sel':'')+'" data-act="ml" data-id="'+id+'" '+(m?'disabled':'')+'>'+esc(ITEM[id].bs)+'</button>';
+      }).join('');
+      var R=s.ro.map(function(id){
+        var m=c.matched.indexOf(id)>=0;
+        return '<button class="mt en'+(m?' matched':'')+(c.flash===id?' wrong':'')+'" data-act="mr" data-id="'+id+'" '+(m?'disabled':'')+'>'+esc(ITEM[id].en)+'</button>';
+      }).join('');
+      return '<p class="prompt">Match each phrase to its meaning.</p><div class="match"><div class="col">'+L+'</div><div class="col">'+R+'</div></div>';
+    case 'say':
+      return '<p class="prompt">Say it out loud.</p><div class="big center"><h1 class="phrase">'+esc(it.bs)+'</h1><p class="resp">/'+esc(it.say)+'/</p><p class="en">'+esc(it.en)+'</p><div class="play-row">'+playBtns(it.bs)+'</div></div>'+
+        '<p class="hint" style="text-align:center">Listen once, then say it twice out loud. Copy the rhythm, not just the words.</p>';
+  }
+  return '';
+}
+function fbHTML(ok,detail){
+  return '<div class="fb" role="status"><span class="fb-ic">'+(ok?I.check:I.x)+'</span><div><strong>'+(ok?'Tačno!':'Not quite')+'</strong><span class="d">'+esc(detail)+'</span></div></div>'+
+    '<button class="btn primary wide" data-act="next">Continue</button>';
+}
+function dockHTML(s){
+  var c=run.cur;
+  if(s.type==='tip') return '<button class="btn primary wide" data-act="next">Start the lesson</button>';
+  if(s.type==='intro') return '<button class="btn primary wide" data-act="next">Continue</button>';
+  if(s.type==='say') return '<div class="two"><button class="btn secondary" data-act="say-again">Once more</button><button class="btn primary" data-act="say-got">Got it</button></div>';
+  if(s.type==='match'){
+    if(!c.done) return '<p class="dock-hint">Tap a phrase, then its meaning.</p>';
+    return fbHTML(c.mistakes===0, c.mistakes===0?'All matched':c.mistakes+(c.mistakes===1?' miss':' misses')+', all matched');
+  }
+  if(!c.checked) return '<button class="btn primary wide" data-act="check" '+(canCheck(s)?'':'disabled')+'>Check</button>';
+  return fbHTML(c.ok, (c.ok?'':'Answer: ')+s.item.bs+' · '+s.item.en);
+}
+function dockClass(s){
+  var c=run.cur;
+  if(s.type==='match' && c.done) return c.mistakes===0?'ok':'no';
+  if((s.type!=='tip'&&s.type!=='intro'&&s.type!=='say'&&s.type!=='match') && c.checked) return c.ok?'ok':'no';
+  return '';
+}
+function sheetHTML(){
+  return '<div class="scrim"><div class="sheet" role="dialog" aria-label="Leave this session?"><h2>Leave this session?</h2><p class="hint">Progress in this session will not be saved.</p>'+
+    '<button class="btn primary wide" data-act="quit-stay">Keep going</button><button class="btn secondary wide" data-act="quit-leave">Leave</button></div></div>';
+}
+function renderLesson(){
+  if(run.idx>=run.steps.length) return renderResult();
+  var s=curStep(), pct=Math.round(run.idx/run.steps.length*100);
+  view.innerHTML=
+    '<section class="lesson"><header class="lesson-top"><button class="icon-btn" data-act="quit" aria-label="Leave lesson">'+I.close+'</button>'+
+    '<div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="'+pct+'"><span style="width:'+pct+'%"></span></div></header>'+
+    '<div class="stage" id="stage">'+stageHTML(s)+'</div>'+
+    '<footer class="dock '+dockClass(s)+'" id="dock">'+dockHTML(s)+'</footer></section>'+(ui.quit?sheetHTML():'');
+  if(s.type==='intro' || (s.type==='listen' && !run.cur.checked)){
+    var step=s; setTimeout(function(){ if(run && curStep()===step) speak(step.item.bs,0.9); },250);
+  }
+}
+function paint(){
+  var s=curStep(); if(!s) return;
+  $('#stage').innerHTML=stageHTML(s);
+  var d=$('#dock'); d.className='dock '+dockClass(s); d.innerHTML=dockHTML(s);
+}
+function nextStep(){ run.idx++; run.cur=newCur(); renderLesson(); window.scrollTo(0,0); }
+function requeue(s){
+  var key=s.type+':'+s.item.id; if(run.rq[key]) return; run.rq[key]=1;
+  var again=(s.type==='build')?buildStep(s.item,run.lesson):mcq(s.type,s.item,run.lesson);
+  run.steps.splice(Math.min(run.idx+4,run.steps.length),0,again);
+}
+function record(ok,s,retry){
+  if(ok) run.right++; else { run.wrong++; if(s.item) run.weak[s.item.id]=1; if(retry) requeue(s); }
+  bumpReps(1);
+}
+function check(){
+  var s=curStep(), c=run.cur; if(c.checked||!canCheck(s)) return;
+  var ok;
+  if(s.type==='build'){
+    var words=c.placed.map(function(k){ return s.bank.filter(function(b){ return b.k===k; })[0].w.toLowerCase(); });
+    ok=(words.join(' ')===s.ans.map(function(a){ return a.toLowerCase(); }).join(' '));
+  } else ok=(c.sel===s.item.id);
+  c.checked=true; c.ok=ok; record(ok,s,true); paint();
+}
+function matchClick(side,id){
+  var s=curStep(), c=run.cur; if(!s||s.type!=='match'||c.done) return;
+  if(side==='l'){ if(c.matched.indexOf(id)>=0) return; c.mSel=id; paint(); return; }
+  if(c.mSel===null||c.matched.indexOf(id)>=0) return;
+  if(c.mSel===id){
+    c.matched.push(id); c.mSel=null;
+    if(c.matched.length===s.items.length){ c.done=true; record(c.mistakes===0,s,false); bumpReps(s.items.length-1); }
+    paint();
+  } else {
+    c.mistakes++; c.flash=id; c.mSel=null; paint();
+    setTimeout(function(){ if(run && run.cur===c){ c.flash=null; paint(); } },450);
+  }
+}
+function saySay(got){
+  var s=curStep(); if(!s||s.type!=='say') return;
+  if(!got) run.weak[s.item.id]=1;
+  bumpReps(1); nextStep();
+}
+function renderResult(){
+  if(!run.finished){
+    run.finished=true;
+    var L=run.lesson; state.done[L.id]=true;
+    L.items.forEach(function(it){
+      var c=state.cards[it.id];
+      if(!c) state.cards[it.id]={box:0,due:Date.now(),seen:0};      /* due right away so the Review tab can be tried now */
+      else if(run.weak[it.id]){ c.box=0; c.due=Date.now(); }
+    });
+    markDay(); save();
+  }
+  var tot=run.right+run.wrong, acc=Math.round(100*run.right/Math.max(1,tot)), L2=run.lesson;
+  view.innerHTML=
+    '<section class="result"><div><p class="eyebrow">Lesson complete</p><h1 class="display" style="margin-top:6px">Bravo!</h1>'+
+    '<p class="lead">'+esc(L2.bs)+' · '+esc(L2.en)+'</p></div>'+
+    '<div class="stats"><div class="stat"><strong>'+acc+'%</strong><span>accuracy</span></div><div class="stat"><strong>'+L2.items.length+'</strong><span>new phrases</span></div></div>'+
+    '<div><p class="eyebrow">Added to your review</p><ul class="plist">'+L2.items.map(function(it){
+      return '<li class="prow"><div><b>'+esc(it.bs)+'</b><small>'+esc(it.en)+'</small></div>'+(AUDIO?'<button class="icon-btn" style="color:var(--accent)" data-act="say" data-text="'+esc(it.bs)+'" aria-label="Play '+esc(it.bs)+'">'+I.speaker+'</button>':'')+'</li>';
+    }).join('')+'</ul></div>'+
+    '<div class="actions"><button class="btn primary wide" data-act="start-review">Review these now</button><button class="btn secondary wide" data-act="home">Back to Learn</button></div></section>';
+  window.scrollTo(0,0);
+}
+
+/* ---------- review (spaced repetition, simple 5-step ladder) ---------- */
+function startReview(){
+  var ids=shuffle(dueIds()).slice(0,10);
+  if(!ids.length) return;
+  rev={queue:ids,idx:0,reveal:false,good:0,again:0,rq:{}};
+  run=null; ui.quit=false; renderRoot(); window.scrollTo(0,0);
+}
+function revMode(id){ return (AUDIO && ((state.cards[id].seen||0)%2===1))?'listen':'produce'; }
+function renderReviewHome(){
+  var due=dueIds(), learned=Object.keys(state.cards).filter(function(id){ return ITEM[id]; });
+  var order=[]; LESSONS.forEach(function(L){ (L.items||[]).forEach(function(it){ if(state.cards[it.id]) order.push(it.id); }); });
+  var now=Date.now();
+  var nextDue=null; order.forEach(function(id){ var d=state.cards[id].due; if(d>now && (nextDue===null||d<nextDue)) nextDue=d; });
+  var summary;
+  if(!learned.length) summary='<div class="sec"><h2>Nothing to review yet</h2><p class="lead" style="margin-top:0">Finish a lesson and its phrases appear here. They come back just before you would forget them.</p></div>';
+  else if(due.length) summary='<div class="sec"><h2>'+due.length+(due.length===1?' phrase is':' phrases are')+' due</h2><p class="lead" style="margin-top:0">About two minutes. Say each answer out loud before you check it.</p></div><button class="btn primary wide" data-act="start-review">Start review</button>';
+  else summary='<div class="sec"><h2>All caught up</h2><p class="lead" style="margin-top:0">'+(nextDue?'Next phrase is due in '+fmtSpan(nextDue-now)+'.':'Nothing is due right now.')+'</p></div>';
+  var list=order.length?'<div class="sec"><p class="eyebrow">Your phrases · '+order.length+'</p></div><ul class="plist">'+order.map(function(id){
+    var it=ITEM[id], c=state.cards[id], pips='';
+    for(var i=1;i<=5;i++) pips+='<span class="pip'+(i<=c.box?' on':'')+'"></span>';
+    var when=c.due<=now?'Due now':'in '+fmtSpan(c.due-now);
+    return '<li class="prow"><div><b>'+esc(it.bs)+'</b><small>'+esc(it.en)+'</small></div><div><div class="pips" aria-label="Strength '+c.box+' of 5">'+pips+'</div><small style="text-align:right">'+when+'</small></div></li>';
+  }).join('')+'</ul>':'';
+  view.innerHTML='<header class="top"><span class="brand">Review</span></header>'+summary+list+'<div style="height:24px"></div>';
+}
+function renderReviewCard(){
+  if(rev.idx>=rev.queue.length) return renderReviewDone();
+  var id=rev.queue[rev.idx], it=ITEM[id], card=state.cards[id], mode=revMode(id);
+  var pct=Math.round(rev.idx/rev.queue.length*100), stage, dock;
+  if(mode==='produce'){
+    stage='<p class="eyebrow">Review</p><p class="prompt">Say it in Bosnian.</p><div class="big"><h1 class="phrase en-phrase">“'+esc(it.en)+'”</h1></div>'+
+      (rev.reveal?'<div class="reveal"><h2 class="phrase">'+esc(it.bs)+'</h2><p class="resp">/'+esc(it.say)+'/</p><div class="play-row">'+playBtns(it.bs)+'</div></div>':'<p class="hint">Say it out loud first, then check.</p>');
+  } else {
+    stage='<p class="eyebrow">Review</p><p class="prompt">Listen. What does it mean?</p><div class="big"><div class="play-row">'+playBtns(it.bs)+'</div></div>'+
+      (rev.reveal?'<div class="reveal"><h2 class="phrase">'+esc(it.bs)+'</h2><p class="en">'+esc(it.en)+'</p></div>':'');
+  }
+  if(!rev.reveal) dock='<button class="btn primary wide" data-act="reveal">Show answer</button>';
+  else {
+    var nb=Math.min(5,(card.box||0)+1), good=INTERVALS[nb]*DAY;
+    dock='<div class="two"><button class="btn secondary stack" data-act="rate-again">Again<small>in 10 min</small></button><button class="btn primary stack" data-act="rate-good">Good<small>in '+fmtSpan(good)+'</small></button></div>';
+  }
+  view.innerHTML='<section class="lesson"><header class="lesson-top"><button class="icon-btn" data-act="quit" aria-label="Leave review">'+I.close+'</button>'+
+    '<div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="'+pct+'"><span style="width:'+pct+'%"></span></div></header>'+
+    '<div class="stage">'+stage+'</div><footer class="dock">'+dock+'</footer></section>'+(ui.quit?sheetHTML():'');
+  if(mode==='listen' && !rev.reveal){ var cur=rev.idx; setTimeout(function(){ if(rev && rev.idx===cur && !rev.reveal) speak(it.bs,0.9); },250); }
+}
+function rate(good){
+  var id=rev.queue[rev.idx], c=state.cards[id];
+  c.seen=(c.seen||0)+1;
+  if(good){ c.box=Math.min(5,(c.box||0)+1); c.due=Date.now()+INTERVALS[c.box]*DAY; rev.good++; }
+  else { c.box=0; c.due=Date.now()+10*60000; rev.again++; if(!rev.rq[id]){ rev.rq[id]=1; rev.queue.push(id); } }
+  bumpReps(1); save(); rev.idx++; rev.reveal=false; renderRoot(); window.scrollTo(0,0);
+}
+function renderReviewDone(){
+  var now=Date.now(), next=null;
+  Object.keys(state.cards).forEach(function(id){ var d=state.cards[id].due; if(d>now && (next===null||d<next)) next=d; });
+  view.innerHTML='<section class="result"><div><p class="eyebrow">Review complete</p><h1 class="display" style="margin-top:6px">Odlično!</h1>'+
+    '<p class="lead">'+(next?'Your next phrase is due in '+fmtSpan(next-now)+'.':'Nothing else is due right now.')+'</p></div>'+
+    '<div class="stats"><div class="stat"><strong>'+rev.good+'</strong><span>remembered</span></div><div class="stat"><strong>'+rev.again+'</strong><span>to see again</span></div></div>'+
+    '<div class="actions"><button class="btn primary wide" data-act="home">Back to Learn</button></div></section>';
+}
+
+/* ---------- microphone (optional: only where the page is allowed to use it) ---------- */
+var PKEY='hajde.prefs.v1';
+function loadPrefs(){
+  try{ var raw=window.localStorage.getItem(PKEY); if(raw){ var p=JSON.parse(raw); if(p && typeof p==='object') return p; } }catch(e){}
+  return {rec:false};
+}
+var prefs=loadPrefs();
+function savePrefs(){ try{ window.localStorage.setItem(PKEY,JSON.stringify(prefs)); }catch(e){} }
+var micBlocked=false, mic=null, lvlTimer=null, VOICE_MIN=0.015;
+function inFrame(){ try{ return window.top!==window; }catch(e){ return true; } }
+function canRecord(){
+  try{
+    if(micBlocked) return false;
+    if(!navigator.mediaDevices || typeof navigator.mediaDevices.getUserMedia!=='function' || !window.MediaRecorder) return false;
+    var pp=document.permissionsPolicy||document.featurePolicy;
+    if(pp && typeof pp.allowsFeature==='function' && pp.allowsFeature('microphone')===false) return false;
+    return true;
+  }catch(e){ return false; }
+}
+function micMime(){
+  var t=['audio/webm;codecs=opus','audio/webm','audio/mp4','audio/ogg;codecs=opus'];
+  try{ if(window.MediaRecorder.isTypeSupported){ for(var i=0;i<t.length;i++) if(window.MediaRecorder.isTypeSupported(t[i])) return t[i]; } }catch(e){}
+  return '';
+}
+/* Call this straight from a tap: iOS only starts the audio context inside a gesture. cb(ok, micObject|errorName) */
+function micOpen(cb){
+  var AC=window.AudioContext||window.webkitAudioContext, ctx=null, p;
+  try{ if(AC){ ctx=new AC(); if(ctx.resume) ctx.resume(); } }catch(e){ ctx=null; }
+  try{ p=navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true,autoGainControl:true}}); }
+  catch(e){ try{ if(ctx&&ctx.close) ctx.close(); }catch(x){} cb(false,(e&&e.name)||'Error'); return; }
+  p.then(function(stream){
+    var an=null;
+    try{ if(ctx){ var src=ctx.createMediaStreamSource(stream); an=ctx.createAnalyser(); an.fftSize=1024; src.connect(an); } }catch(e){ an=null; }
+    cb(true,{stream:stream,ctx:ctx,an:an,buf:an?new Uint8Array(an.fftSize):null,mr:null,chunks:[],mime:'',peak:0});
+  },function(e){ try{ if(ctx&&ctx.close) ctx.close(); }catch(x){} cb(false,(e&&e.name)||'Error'); });
+}
+function micShut(m){
+  if(!m) return;
+  try{ if(m.mr){ m.mr.ondataavailable=null; m.mr.onstop=null; if(m.mr.state!=='inactive') m.mr.stop(); } }catch(e){}
+  m.mr=null; m.chunks=[];
+  try{ m.stream.getTracks().forEach(function(t){ t.stop(); }); }catch(e){}
+  try{ if(m.ctx && m.ctx.close) m.ctx.close(); }catch(e){}
+}
+function micClose(){ lvlStop(); micShut(mic); mic=null; }
+function micMeter(){ return !!(mic && mic.an && mic.ctx && mic.ctx.state==='running'); }
+function micLevel(){
+  if(!micMeter()) return 0;
+  try{
+    mic.an.getByteTimeDomainData(mic.buf);
+    var sum=0; for(var i=0;i<mic.buf.length;i++){ var v=(mic.buf[i]-128)/128; sum+=v*v; }
+    return Math.sqrt(sum/mic.buf.length);
+  }catch(e){ return 0; }
+}
+function lvlStop(){ if(lvlTimer){ clearTimeout(lvlTimer); lvlTimer=null; } }
+function lvlStart(){
+  lvlStop();
+  (function tick(){
+    if(!mic || !mic.mr){ lvlTimer=null; return; }
+    var l=micLevel(); if(l>mic.peak) mic.peak=l;
+    var el=document.getElementById('lvl'); if(el) el.style.width=Math.min(100,Math.round(l*350))+'%';
+    lvlTimer=setTimeout(tick,80);
+  })();
+}
+function recStart(){
+  recDiscard();
+  if(!mic) return false;
+  try{
+    var mt=micMime(), mr=mt?new window.MediaRecorder(mic.stream,{mimeType:mt}):new window.MediaRecorder(mic.stream);
+    mic.chunks=[]; mic.peak=0; mic.mr=mr; mic.mime=mr.mimeType||mt||'audio/webm';
+    mr.ondataavailable=function(e){ if(e.data && e.data.size) mic.chunks.push(e.data); };
+    mr.start();
+    lvlStart();
+    return true;
+  }catch(e){ if(mic) mic.mr=null; return false; }
+}
+function recDiscard(){
+  lvlStop();
+  if(!mic || !mic.mr) return;
+  var mr=mic.mr; mic.mr=null; mic.chunks=[];
+  try{ mr.ondataavailable=null; mr.onstop=null; if(mr.state!=='inactive') mr.stop(); }catch(e){}
+}
+/* cb({voiced:true,url}) | {voiced:false} | null (recorder failed) */
+function recStop(cb){
+  lvlStop();
+  var m=mic;
+  if(!m || !m.mr){ cb(null); return; }
+  var mr=m.mr, voiced=micMeter()?m.peak>VOICE_MIN:true, fired=false, fb=null;
+  m.mr=null;
+  function done(){
+    if(fired) return; fired=true; if(fb) clearTimeout(fb);
+    var chunks=m.chunks; m.chunks=[];
+    if(!voiced){ cb({voiced:false}); return; }
+    var url=null;
+    try{ if(chunks.length) url=window.URL.createObjectURL(new window.Blob(chunks,{type:m.mime})); }catch(e){ url=null; }
+    cb(url?{voiced:true,url:url}:null);
+  }
+  try{
+    mr.onstop=done;
+    if(mr.state==='inactive') done(); else{ mr.stop(); fb=setTimeout(done,1500); }
+  }catch(e){ done(); }
+}
+function dropTake(s,i){
+  var t=s.takes[i]; if(!t) return;
+  try{ window.URL.revokeObjectURL(t.url); }catch(e){}
+  delete s.takes[i];
+}
+function micNote(err){
+  if(err==='NotAllowedError' || err==='SecurityError'){
+    if(inFrame()){ micBlocked=true; return 'This view does not allow the microphone, so there is no recording this time.'; }
+    return 'The microphone is blocked for this page. You can allow it in your browser settings. No recording this time.';
+  }
+  if(err==='NotFoundError' || err==='OverconstrainedError') return 'No microphone was found, so there is no recording this time.';
+  return 'The microphone could not start, so there is no recording this time.';
+}
+
+/* ---------- speak: repeat after me ----------
+   Each phrase: hear it, a gap to say it, hear it slowly, a second gap. The gap is sized from how long the phrase took to play.
+   With "Record me" on (and a page that may use the microphone) the second gap is recorded, then you hear yourself and then the model.
+   Recordings live in memory only and are thrown away when you leave the session. */
+var SHADOW_N=10;
+function setMins(n){ return Math.max(1,Math.round(n*9/60)); }
+function speakSets(){
+  var sets={}, learned=[];
+  LESSONS.forEach(function(L){ (L.items||[]).forEach(function(it){ var c=state.cards[it.id]; if(c) learned.push({it:it,box:c.box||0,r:Math.random()}); }); });
+  learned.sort(function(a,b){ return a.box-b.box || a.r-b.r; });          /* weakest first */
+  sets.mixed={key:'mixed',title:'Your phrases',items:shuffle(learned.slice(0,SHADOW_N).map(function(x){ return {bs:x.it.bs,en:x.it.en,say:x.it.say}; }))};
+  sets.tricky={key:'tricky',title:'Tricky sounds',items:LESSONS[0].tip.rows.map(function(r){ return {bs:r.w,en:r.g,hint:r.l+' · '+r.s}; })};
+  LESSONS.forEach(function(L){ if(L.items) sets[L.id]={key:L.id,title:L.bs,items:L.items.map(function(it){ return {bs:it.bs,en:it.en,say:it.say}; })}; });
+  return sets;
+}
+function recSwitchHTML(){
+  if(canRecord()){
+    return '<button class="opt-row" role="switch" aria-checked="'+(prefs.rec?'true':'false')+'" data-act="toggle-rec">'+
+      '<span><strong>Record me</strong><small>Hear yourself, then the model, after your second try. Asks for your microphone. Recordings stay on this device and are deleted when you leave.</small></span>'+
+      '<span class="switch" aria-hidden="true"></span></button>';
+  }
+  return '<p class="fine">Hearing yourself back needs the microphone, which is not available in this browser or view. Open Hajde as its own web page to turn it on.</p>';
+}
+function renderSpeakHome(){
+  var S=speakSets(), body;
+  function row(s,sub,off){
+    return '<li><button class="node" data-act="sh-start" data-set="'+s.key+'" '+(off?'disabled':'')+'>'+
+      '<span class="node-mark">'+I.speaker+'</span>'+
+      '<span><span class="node-bs">'+esc(s.title)+'</span><span class="node-en">'+esc(sub)+'</span></span>'+
+      '<span class="node-cta">'+(off?'':'Start')+'</span></button></li>';
+  }
+  if(!AUDIO){
+    body='<div class="sec"><h2>Sound needed</h2><p class="lead" style="margin-top:0">This browser cannot play audio, so Repeat after me is not available. You can still say each phrase out loud in Learn and Review.</p></div>';
+  } else {
+    var m=S.mixed, t=S.tricky;
+    body='<div class="sec"><h2>Repeat after me</h2><p class="lead" style="margin-top:0">Each phrase plays, then you get a gap to say it out loud. It plays again slowly and you say it once more. Do it even if it feels odd.</p></div>'+
+      '<div class="opt-wrap">'+recSwitchHTML()+'</div>'+
+      '<ul class="path">'+
+      row(m, m.items.length?(m.items.length+' of your weakest phrases · about '+setMins(m.items.length)+' min'):'Finish a lesson to unlock this', !m.items.length)+
+      row(t, t.items.length+' words · the six letters to learn first · about '+setMins(t.items.length)+' min')+'</ul>'+
+      '<div class="sec"><p class="eyebrow">By lesson</p></div><ul class="path">'+
+      LESSONS.map(function(L){ var s=S[L.id]; return row(s, L.en+' · '+s.items.length+' phrases · about '+setMins(s.items.length)+' min'); }).join('')+'</ul>';
+  }
+  view.innerHTML='<header class="top"><span class="brand">Speak</span></header>'+body+'<div style="height:24px"></div>';
+}
+function shClear(){ if(shTimer){ clearTimeout(shTimer); shTimer=null; } }
+function shDropAll(s){ if(!s) return; Object.keys(s.takes).forEach(function(i){ dropTake(s,i); }); }
+function shStop(){ shClear(); recDiscard(); micClose(); if(sh){ sh.token++; shDropAll(sh); } stopAudio(); sh=null; }
+function startShadow(key){
+  var set=speakSets()[key];
+  if(!AUDIO || !set || !set.items.length) return;
+  shStop(); run=null; rev=null; ui.quit=false;
+  unlockPlayer();                                   /* still inside the tap: lets later clips play */
+  var s=sh={key:key,title:set.title,q:set.items,idx:0,phase:'listen',paused:false,token:0,heard:1200,gap:0,done:0,finished:false,
+    rec:false,wait:false,recording:false,note:'',takes:{}};
+  if(prefs.rec && canRecord()){
+    s.wait=true; renderRoot(); window.scrollTo(0,0);
+    micOpen(function(ok,res){
+      if(sh!==s || !s.wait){ if(ok) micShut(res); return; }      /* left, or chose to carry on without it */
+      s.wait=false;
+      if(ok){ mic=res; s.rec=true; } else s.note=micNote(res);
+      shRun();
+    });
+    return;
+  }
+  shRun(); window.scrollTo(0,0);
+}
+function shGapMs(heard){ return Math.max(2200,Math.min(9000,Math.round(heard*1.4+1000))); }
+function shRun(){
+  var s=sh; if(!s||s.paused) return;
+  shClear();
+  if(s.wait){ renderRoot(); return; }
+  var me=++s.token, p=s.q[s.idx], ph=s.phase, turn=(ph==='turn'||ph==='turn2');
+  function live(){ return sh===s && !s.paused && s.token===me; }
+  function go(next){ if(!live()) return; shClear(); s.phase=next; shRun(); }
+  s.recording=false;
+  if(turn){
+    s.gap=shGapMs(s.heard);
+    var rec=(ph==='turn2' && s.rec) ? recStart() : false;
+    s.recording=rec; renderRoot();
+    shTimer=setTimeout(function(){
+      shTimer=null; if(!live()) return;
+      if(ph==='turn') return go('slow');
+      if(!rec) return shNext();
+      recStop(function(res){
+        if(!live()){ if(res && res.url) try{ window.URL.revokeObjectURL(res.url); }catch(e){} return; }
+        if(res && res.voiced){ dropTake(s,s.idx); s.takes[s.idx]={url:res.url}; go('you'); }
+        else if(res) go('nohear');
+        else shNext();
+      });
+    },s.gap);
+  } else if(ph==='nohear'){
+    s.gap=0; renderRoot();
+    shTimer=setTimeout(function(){ shTimer=null; if(live()) shNext(); },1600);
+  } else if(ph==='you'){
+    var take=s.takes[s.idx]; s.gap=0; renderRoot();
+    if(!take){ go('model'); return; }
+    playTake(take.url,function(){ if(live()) go('model'); });
+    shTimer=setTimeout(function(){ shTimer=null; if(live()) go('model'); },15000);
+  } else {                                           /* listen, slow, model: the clip is the model */
+    s.gap=0; renderRoot();
+    speak(p.bs,ph==='slow'?0.55:0.9,function(ms){
+      if(!live()) return;
+      if(ph!=='model') s.heard=ms||1200;
+      if(ph==='model') shNext(); else go(ph==='listen'?'turn':'turn2');
+    });
+    shTimer=setTimeout(function(){ shTimer=null; if(!live()) return; if(ph!=='model') s.heard=1500; if(ph==='model') shNext(); else go(ph==='listen'?'turn':'turn2'); },9000);   /* audio blocked or silent: carry on */
+  }
+}
+function shNext(){
+  var s=sh; if(!s) return;
+  s.done++; bumpReps(1); s.idx++; s.phase='listen';
+  if(s.idx>=s.q.length) shFinish(); else shRun();
+}
+function shFinish(){ shClear(); recDiscard(); micClose(); stopAudio(); sh.token++; sh.recording=false; sh.finished=true; renderRoot(); window.scrollTo(0,0); }
+function shHalt(s){ shClear(); recDiscard(); stopAudio(); s.token++; }          /* pause, skip, hear again */
+function renderShadowWait(){
+  view.innerHTML=
+    '<section class="lesson"><header class="lesson-top"><button class="icon-btn" data-act="sh-exit" aria-label="Leave this session">'+I.close+'</button>'+
+    '<div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span style="width:0%"></span></div></header>'+
+    '<div class="stage say-stage"><p class="eyebrow">Repeat after me</p>'+
+    '<div class="turn-card"><span class="status" role="status">Waiting for the microphone</span>'+
+    '<p class="prompt">Allow the microphone</p>'+
+    '<p class="en">Your browser is asking to use the microphone. Choose Allow so you can hear yourself next to the model. Nothing leaves this device.</p></div></div>'+
+    '<footer class="dock"><button class="btn secondary wide" data-act="sh-norec">Carry on without recording</button></footer></section>';
+}
+function renderShadow(){
+  var s=sh;
+  if(s.finished) return renderShadowDone();
+  if(s.wait) return renderShadowWait();
+  var hadFocus=view.contains(document.activeElement) && document.activeElement!==document.body;
+  var p=s.q[s.idx], ph=s.phase, turn=(ph==='turn'||ph==='turn2'), pct=Math.round(s.idx/s.q.length*100), label, hint;
+  if(s.paused){ label='Paused'; hint='Paused. Resume when you are ready.'; }
+  else if(turn){ label='Your turn'; hint='Say it out loud now.'; }
+  else if(ph==='you'){ label='You'; hint='This is how you sounded.'; }
+  else if(ph==='model'){ label='Model'; hint='And the model once more.'; }
+  else if(ph==='nohear'){ label='Didn’t hear you'; hint='No voice came through. A little louder next time, and closer to the phone.'; }
+  else { label=(ph==='slow')?'Listen, slower':'Listen'; hint='Listen first. You say it after.'; }
+  var cls=(turn&&!s.paused)?' turn':'';
+  var recLine=(s.recording&&!s.paused)?'<p class="rec-line"><span class="rec-dot" aria-hidden="true"></span>Recording'+(micMeter()?'<span class="lvl" aria-hidden="true"><i id="lvl"></i></span>':'')+'</p>':'';
+  view.innerHTML=
+    '<section class="lesson"><header class="lesson-top"><button class="icon-btn" data-act="sh-exit" aria-label="Leave this session">'+I.close+'</button>'+
+    '<div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="'+pct+'"><span style="width:'+pct+'%"></span></div></header>'+
+    '<div class="stage say-stage"><p class="eyebrow">Repeat after me · <span class="set-count">'+(s.idx+1)+' of '+s.q.length+'</span></p>'+
+    '<div class="turn-card'+cls+'"><span class="status'+cls+'" role="status">'+label+'</span>'+
+    '<h1 class="phrase">'+esc(p.bs)+'</h1>'+(p.say?'<p class="resp">/'+esc(p.say)+'/</p>':'')+(p.hint?'<p class="resp">'+esc(p.hint)+'</p>':'')+'<p class="en">'+esc(p.en)+'</p>'+
+    recLine+
+    '<div class="gapbar'+(cls?'':' idle')+'" style="--gap:'+(s.gap/1000).toFixed(2)+'s" aria-hidden="true"><span></span></div></div>'+
+    '<p class="hint">'+hint+'</p>'+(s.note?'<p class="fine">'+esc(s.note)+'</p>':'')+'</div>'+
+    '<footer class="dock"><div class="two"><button class="btn secondary" data-act="sh-replay">Hear again</button><button class="btn secondary" data-act="sh-skip">Skip</button></div>'+
+    '<button class="btn primary wide" data-act="'+(s.paused?'sh-resume':'sh-pause')+'">'+(s.paused?'Resume':'Pause')+'</button></footer></section>';
+  if(hadFocus){ var b=view.querySelector('.dock .btn.primary'); if(b) try{ b.focus({preventScroll:true}); }catch(e){} }
+  if(s.recording && !s.paused) lvlStart();
+}
+function renderShadowDone(){
+  var s=sh, idxs=Object.keys(s.takes).map(Number).sort(function(a,b){ return a-b; }), hear='';
+  if(idxs.length){
+    hear='<div><h2 class="mini-h">Hear yourself</h2><ul class="hear">'+idxs.map(function(i){
+      return '<li><span class="hear-bs">'+esc(s.q[i].bs)+'</span><span class="hear-btns">'+
+        '<button class="play ghost" data-act="sh-hear" data-i="'+i+'" aria-label="Model: '+esc(s.q[i].bs)+'">Model</button>'+
+        '<button class="play" data-act="sh-hearme" data-i="'+i+'" aria-label="You: '+esc(s.q[i].bs)+'">You</button></span></li>';
+    }).join('')+'</ul><p class="fine" style="margin-top:10px">These recordings are only kept until you leave this screen.</p></div>';
+  }
+  view.innerHTML='<section class="result"><div><p class="eyebrow">Session complete</p><h1 class="display" style="margin-top:6px">Dobro!</h1>'+
+    '<p class="lead">'+(s.done?('You said '+s.done+(s.done===1?' phrase':' phrases')+' out loud. A minute or two like this, most days, is plenty.'):'You skipped through this one. Come back when you can say the phrases out loud.')+'</p></div>'+
+    '<div class="stats"><div class="stat"><strong>'+s.done+'</strong><span>'+esc(s.title)+' · phrases said</span></div></div>'+hear+
+    (s.note?'<p class="fine">'+esc(s.note)+'</p>':'')+
+    '<div class="actions"><button class="btn primary wide" data-act="sh-again">Go again</button><button class="btn secondary wide" data-act="sh-exit">Back to Speak</button></div></section>';
+}
+
+/* ---------- events ---------- */
+var A={
+  'sh-start':function(t){ startShadow(t.getAttribute('data-set')); },
+  'sh-pause':function(){ var s=sh; if(!s) return; s.paused=true; shHalt(s); renderRoot(); },
+  'sh-resume':function(){ var s=sh; if(!s) return; s.paused=false; shRun(); },
+  'sh-norec':function(){ var s=sh; if(!s||!s.wait) return; s.wait=false; s.note='Carrying on without recording.'; shRun(); },
+  'sh-hear':function(t){ var s=sh; if(!s) return; var q=s.q[+t.getAttribute('data-i')]; if(q) speak(q.bs,0.9); },
+  'sh-hearme':function(t){ var s=sh; if(!s) return; var k=s.takes[+t.getAttribute('data-i')]; if(k) playTake(k.url); },
+  'toggle-rec':function(){ prefs.rec=!prefs.rec; savePrefs(); renderRoot(); },
+  'sh-replay':function(){ var s=sh; if(!s||s.wait) return; shHalt(s); dropTake(s,s.idx); s.paused=false; s.phase='listen'; shRun(); },
+  'sh-skip':function(){ var s=sh; if(!s||s.wait) return; shHalt(s); s.paused=false; s.idx++; s.phase='listen'; if(s.idx>=s.q.length) shFinish(); else shRun(); },
+  'sh-again':function(){ var s=sh; if(s) startShadow(s.key); },
+  'sh-exit':function(){ shStop(); ui.tab='speak'; renderRoot(); window.scrollTo(0,0); },
+  tab:function(t){ ui.tab=t.getAttribute('data-tab'); renderRoot(); window.scrollTo(0,0); },
+  open:function(t){ startLesson(t.getAttribute('data-id')); },
+  say:function(t){ speak(t.getAttribute('data-text'),0.9); },
+  slow:function(t){ speak(t.getAttribute('data-text'),0.55); },
+  next:function(){ if(run) nextStep(); },
+  opt:function(t){ if(!run||run.cur.checked) return; run.cur.sel=t.getAttribute('data-id'); paint(); },
+  check:function(){ if(run) check(); },
+  place:function(t){ if(!run||run.cur.checked) return; var k=t.getAttribute('data-k'); if(run.cur.placed.indexOf(k)<0){ run.cur.placed.push(k); paint(); } },
+  unplace:function(t){ if(!run||run.cur.checked) return; var k=t.getAttribute('data-k'); run.cur.placed=run.cur.placed.filter(function(x){ return x!==k; }); paint(); },
+  ml:function(t){ if(run) matchClick('l',t.getAttribute('data-id')); },
+  mr:function(t){ if(run) matchClick('r',t.getAttribute('data-id')); },
+  showtext:function(){ if(run){ run.cur.showText=true; paint(); } },
+  'say-got':function(){ if(run) saySay(true); },
+  'say-again':function(){ if(run) saySay(false); },
+  quit:function(){ ui.quit=true; renderRoot(); },
+  'quit-stay':function(){ ui.quit=false; renderRoot(); },
+  'quit-leave':function(){ ui.quit=false; run=null; rev=null; renderRoot(); },
+  home:function(){ run=null; rev=null; shStop(); ui.tab='learn'; renderRoot(); window.scrollTo(0,0); },
+  'start-review':function(){ startReview(); },
+  reveal:function(){
+    if(!rev) return; rev.reveal=true; renderReviewCard();
+    var id=rev.queue[rev.idx]; if(revMode(id)==='produce') speak(ITEM[id].bs,0.9);
+  },
+  'rate-good':function(){ if(rev) rate(true); },
+  'rate-again':function(){ if(rev) rate(false); },
+  reset:function(){
+    if(!ui.resetArm){ ui.resetArm=true; renderRoot(); return; }
+    ui.resetArm=false; state=fresh(); save(); renderRoot();
+  }
+};
+app.addEventListener('click',function(e){
+  var t=e.target.closest('[data-act]'); if(!t||!app.contains(t)) return;
+  var act=t.getAttribute('data-act');
+  if(act!=='reset' && ui.resetArm){ ui.resetArm=false; }
+  var f=A[act]; if(f) f(t);
+});
+
+/* ---------- start ---------- */
+if(TTS){
+  pickVoice();
+  try{ window.speechSynthesis.onvoiceschanged=function(){ pickVoice(); var n=$('#voice-note'); if(n) n.textContent=voiceNote(); }; }catch(e){}
+}
+renderRoot();
+})();
+</script>
+</body>
+</html>
