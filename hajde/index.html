@@ -276,7 +276,7 @@ h1,h2,p,ul{margin:0}
 (function(){
 'use strict';
 
-/* ---------- content: Units 1 to 5, standard Bosnian (ijekavian, Latin script) ---------- */
+/* ---------- content: Units 1 to 10, standard Bosnian (ijekavian, Latin script) ---------- */
 var LESSONS=[
   {id:'l1',bs:'Zdravo!',en:'Hello and goodbye',mins:5,
    tip:{title:'The sounds of Bosnian',lead:'Bosnian is spelled the way it sounds, and every letter is pronounced. These six are the ones to learn first.',rows:[
@@ -397,9 +397,106 @@ var LESSONS=[
      {id:'sta-radis',bs:'Šta radiš?',en:'What are you doing?',say:'shta RAH-deesh',note:'A very common way to start a chat with family.'},
      {id:'kako-je-baka',bs:'Kako je baka?',en:'How is Grandma?',say:'KAH-ko yeh BAH-ka',note:'Ask after anyone: “Kako je tata?”, “Kako je brat?”.'},
      {id:'koliko-kosta',bs:'Koliko košta?',en:'How much does it cost?',say:'KO-lee-ko KOSH-ta',note:'Works in any shop or café.'}
+   ]},
+  {id:'l13',unit:6,bs:'Danas i sutra',en:'Today and tomorrow',mins:5,
+   items:[
+     {id:'danas',bs:'Danas',en:'Today',say:'DAH-nas',note:'It comes from “dan”, the word for “day”, as in “Dobar dan”.'},
+     {id:'sutra',bs:'Sutra',en:'Tomorrow',say:'SOO-tra',note:'Handy for making plans, and you will use it in “Vidimo se sutra”.'},
+     {id:'jucer',bs:'Jučer',en:'Yesterday',say:'YOO-cher',note:'Many people also say “juče”. Both are everyday words.'},
+     {id:'sada',bs:'Sada',en:'Now',say:'SAH-da',note:'The short form “sad” is just as common.'},
+     {id:'ujutro',bs:'Ujutro',en:'In the morning',say:'OO-yoo-tro',note:'Built from “jutro”, the word in “Dobro jutro”.'},
+     {id:'uvecer',bs:'Uvečer',en:'In the evening',say:'OO-veh-cher',note:'“Večer” on its own is “evening”.'},
+     {id:'laku-noc',bs:'Laku noć.',en:'Good night.',say:'LAH-koo noch',note:'Said at bedtime. Literally something like “an easy night”.'}
+   ]},
+  {id:'l14',unit:6,bs:'Dani u sedmici',en:'Days of the week',mins:6,
+   items:[
+     {id:'koji-je-danas-dan',bs:'Koji je danas dan?',en:'What day is it today?',say:'KO-yee yeh DAH-nas dahn',note:'Answer with “Danas je” and a day, for example “Danas je petak”.'},
+     {id:'ponedjeljak',bs:'Ponedjeljak',en:'Monday',say:'po-NEH-dyeh-lyak',note:'The Bosnian spelling has “dje”. In Serbia you may hear “ponedeljak”.'},
+     {id:'utorak',bs:'Utorak',en:'Tuesday',say:'OO-to-rak'},
+     {id:'srijeda',bs:'Srijeda',en:'Wednesday',say:'SREE-yeh-da',note:'Spelled “ije” but said “ee-yeh”, like “mlijeko”.'},
+     {id:'cetvrtak',bs:'Četvrtak',en:'Thursday',say:'CHEHT-vr-tak',note:'It starts with the “č” from “čaj”.'},
+     {id:'petak',bs:'Petak',en:'Friday',say:'PEH-tak',note:'From “pet”, five: the fifth day of the week.'},
+     {id:'subota',bs:'Subota',en:'Saturday',say:'SOO-bo-ta'},
+     {id:'nedjelja',bs:'Nedjelja',en:'Sunday',say:'NEH-dyel-ya',note:'The word for “week” is “sedmica”, which gives this lesson its name.'}
+   ]},
+  {id:'l15',unit:7,bs:'Želim i volim',en:'Wanting and liking',mins:6,
+   items:[
+     {id:'zelim-kafu',bs:'Želim kafu.',en:'I want a coffee.',say:'ZHEH-leem KAH-foo',note:'“Želim” means “I want”. “Kafa” becomes “kafu” again.'},
+     {id:'zelim-uciti',bs:'Želim učiti bosanski.',en:'I want to learn Bosnian.',say:'ZHEH-leem OO-chee-tee BO-sahn-skee',note:'After “želim”, a second verb stays in its “to …” form: “učiti”.'},
+     {id:'ne-zelim',bs:'Ne želim.',en:'I don’t want to.',say:'neh ZHEH-leem',note:'The same pattern as “ne znam”: “ne” goes in front of the verb.'},
+     {id:'volim-kafu',bs:'Volim kafu.',en:'I like coffee.',say:'VO-leem KAH-foo',note:'“Volim” means “I like” and also “I love”.'},
+     {id:'ne-volim-caj',bs:'Ne volim čaj.',en:'I don’t like tea.',say:'neh VO-leem chy',note:'No ending change here: “čaj” is a masculine word and stays as it is.'},
+     {id:'volim-muziku',bs:'Volim muziku.',en:'I like music.',say:'VO-leem MOO-zee-koo',note:'The -a to -u change once more: “muzika” becomes “muziku”.'},
+     {id:'volim-bosnu',bs:'Volim Bosnu.',en:'I love Bosnia.',say:'VO-leem BOS-noo',note:'The same change: “Bosna” becomes “Bosnu”.'}
+   ]},
+  {id:'l16',unit:7,bs:'Imam i treba mi',en:'Having and needing',mins:6,
+   items:[
+     {id:'imam-pitanje',bs:'Imam pitanje.',en:'I have a question.',say:'EE-mahm PEE-tah-nyeh',note:'A polite way to start a question. “Imam” means “I have”, as in “imam brata”.'},
+     {id:'nemam-brata',bs:'Nemam brata.',en:'I don’t have a brother.',say:'NEH-mahm BRAH-ta',note:'“Nemam” is “ne” and “imam” joined together. It is the opposite of “imam brata”.'},
+     {id:'imam-dva-brata',bs:'Imam dva brata.',en:'I have two brothers.',say:'EE-mahm dvah BRAH-ta',note:'After two, three and four the noun takes the “brata” form, not “brat”.'},
+     {id:'imam-dvije-sestre',bs:'Imam dvije sestre.',en:'I have two sisters.',say:'EE-mahm DVEE-yeh SEH-stre',note:'Feminine words use “dvije” instead of “dva”, and “sestra” becomes “sestre”.'},
+     {id:'treba-mi-pomoc',bs:'Treba mi pomoć.',en:'I need help.',say:'TREH-ba mee PO-moch',note:'Literally “help is needed to me”. Swap in anything you need: “Treba mi voda”.'},
+     {id:'mogu-li-dobiti-vodu',bs:'Mogu li dobiti vodu?',en:'Can I have some water?',say:'MO-goo lee DO-bee-tee VO-doo',note:'“Mogu li” starts a polite “may I?” question. Put any food or drink at the end.'}
+   ]},
+  {id:'l17',unit:8,bs:'Lijevo, desno',en:'Directions',mins:6,
+   items:[
+     {id:'lijevo',bs:'Lijevo',en:'Left',say:'LEE-yeh-vo',note:'Another “ije” word, said “ee-yeh”. Serbian says “levo”.'},
+     {id:'desno',bs:'Desno',en:'Right',say:'DEHS-no'},
+     {id:'pravo',bs:'Pravo',en:'Straight ahead',say:'PRAH-vo',note:'Often used in a chain: “Pravo, pa lijevo” means “straight, then left”.'},
+     {id:'blizu',bs:'Blizu',en:'Near',say:'BLEE-zoo'},
+     {id:'daleko',bs:'Daleko',en:'Far',say:'DAH-leh-ko'},
+     {id:'je-li-daleko',bs:'Je li daleko?',en:'Is it far?',say:'yeh lee DAH-leh-ko',note:'“Je li” turns a statement into a yes or no question: “Je li blizu?” is “Is it near?”.'},
+     {id:'gdje-je-stanica',bs:'Gdje je autobuska stanica?',en:'Where is the bus station?',say:'GDYEH yeh OW-to-boo-ska STAH-nee-tsa',note:'The same pattern as “Gdje je kupatilo?”. “Stanica” on its own also means a stop or station.'}
+   ]},
+  {id:'l18',unit:8,bs:'Idem…',en:'Where I’m going',mins:6,
+   items:[
+     {id:'ovdje',bs:'Ovdje',en:'Here',say:'OV-dyeh',note:'The Bosnian spelling has “dje”. Serbian says “ovde”.'},
+     {id:'tamo',bs:'Tamo',en:'There',say:'TAH-mo'},
+     {id:'gdje-ides',bs:'Gdje ideš?',en:'Where are you going?',say:'GDYEH EE-desh',note:'“Ideš” means “you go” and “idem” means “I go”.'},
+     {id:'idem-u-grad',bs:'Idem u grad.',en:'I’m going into town.',say:'EE-dem oo grahd',note:'“U grad” means “into town”. “Grad” is a town or a city.'},
+     {id:'idem-kuci',bs:'Idem kući.',en:'I’m going home.',say:'EE-dem KOO-chee',note:'“Kuća” is “house”, but “kući” on its own means “home”. No extra word for “to”.'},
+     {id:'idem-na-posao',bs:'Idem na posao.',en:'I’m going to work.',say:'EE-dem na PO-sa-o',note:'“Posao” means work or a job. Use “na” with it: “na posao”.'}
+   ]},
+  {id:'l19',unit:9,bs:'Moj dan',en:'My day',mins:6,
+   items:[
+     {id:'ustajem-u-sedam',bs:'Ustajem u sedam.',en:'I get up at seven.',say:'OO-sta-yem oo SEH-dahm',note:'“U sedam” means “at seven”. Swap in any number you know from Unit 2.'},
+     {id:'dorucak',bs:'Doručak',en:'Breakfast',say:'DO-roo-chak'},
+     {id:'rucak',bs:'Ručak',en:'Lunch',say:'ROO-chak',note:'Lunch is often the main meal of the day.'},
+     {id:'vecera',bs:'Večera',en:'Dinner',say:'VEH-che-ra'},
+     {id:'sta-je-za-rucak',bs:'Šta je za ručak?',en:'What’s for lunch?',say:'shta yeh za ROO-chak',note:'Swap in “doručak” or “večeru”. After “za”, “večera” becomes “večeru”.'},
+     {id:'kuham-rucak',bs:'Kuham ručak.',en:'I’m cooking lunch.',say:'KOO-ham ROO-chak',note:'“Kuham” means “I cook”. “Ručak” doesn’t change here.'},
+     {id:'radim-danas',bs:'Radim danas.',en:'I’m working today.',say:'RAH-deem DAH-nas',note:'You know “radiš” from “Šta radiš?”. “Radim” is the “I” form.'}
+   ]},
+  {id:'l20',unit:9,bs:'Poslije posla',en:'After work',mins:6,
+   items:[
+     {id:'citam-knjigu',bs:'Čitam knjigu.',en:'I’m reading a book.',say:'CHEE-tam KNYEE-goo',note:'“Knjiga” becomes “knjigu”, the same -a to -u change.'},
+     {id:'gledam-film',bs:'Gledam film.',en:'I’m watching a film.',say:'GLEH-dam feelm',note:'“Gledam” means “I watch” or “I look at”.'},
+     {id:'slusam-muziku',bs:'Slušam muziku.',en:'I’m listening to music.',say:'SLOO-sham MOO-zee-koo',note:'“Slušam” means “I listen”. The same “muziku” as in “volim muziku”.'},
+     {id:'pomazem-mami',bs:'Pomažem mami.',en:'I’m helping Mum.',say:'po-MAH-zhem MAH-mee',note:'After “pomažem” (I help), “mama” becomes “mami”.'},
+     {id:'umoran-sam',bs:'Umoran sam.',en:'I’m tired.',say:'OO-mo-rahn sahm',note:'Women say “umorna sam”, just like “gladna sam”.'},
+     {id:'idem-spavati',bs:'Idem spavati.',en:'I’m going to sleep.',say:'EE-dem SPAH-va-tee',note:'“Idem” plus a “to …” verb means “I’m going to …”. “Spavati” is “to sleep”.'}
+   ]},
+  {id:'l21',unit:10,bs:'Osjećaji',en:'Feelings',mins:6,
+   items:[
+     {id:'sretan-sam',bs:'Sretan sam.',en:'I’m happy.',say:'SREH-tahn sahm',note:'Women say “sretna sam”.'},
+     {id:'tuzan-sam',bs:'Tužan sam.',en:'I’m sad.',say:'TOO-zhahn sahm',note:'Women say “tužna sam”.'},
+     {id:'ljut-sam',bs:'Ljut sam.',en:'I’m angry.',say:'lyoot sahm',note:'Women say “ljuta sam”. The “lj” sounds like the “lli” in “million”.'},
+     {id:'volim-te',bs:'Volim te.',en:'I love you.',say:'VO-leem teh',note:'Short and warm. “Te” means “you”. Families say it too, not only couples.'},
+     {id:'nedostajes-mi',bs:'Nedostaješ mi.',en:'I miss you.',say:'neh-DO-sta-yesh mee',note:'Literally “you are missing to me”. “Mi” means “to me”, as in “treba mi”.'},
+     {id:'mnogo-te-volim',bs:'Mnogo te volim.',en:'I love you very much.',say:'MNO-go teh VO-leem',note:'“Mnogo” means “a lot”. Here it goes at the front.'}
+   ]},
+  {id:'l22',unit:10,bs:'Za porodicu',en:'Warm words for family',mins:6,
+   items:[
+     {id:'sretan-rodjendan',bs:'Sretan rođendan!',en:'Happy birthday!',say:'SREH-tahn RO-jen-dahn',note:'The “đ” is a soft “j” sound, as in “jam”.'},
+     {id:'cestitam',bs:'Čestitam!',en:'Congratulations!',say:'CHEH-stee-tam',note:'Use it for a birthday, a new job, a wedding or an exam.'},
+     {id:'zivjeli',bs:'Živjeli!',en:'Cheers!',say:'ZHEE-vyeh-lee',note:'Said when you clink glasses. It means “may you live”.'},
+     {id:'dobro-dosli',bs:'Dobro došli!',en:'Welcome!',say:'DO-bro DOSH-lee',note:'This is the plural, for guests. For one man say “dobro došao”, for one woman “dobro došla”.'},
+     {id:'pozdravi-mamu',bs:'Pozdravi mamu.',en:'Say hello to Mum.',say:'POZ-dra-vee MAH-moo',note:'Literally “greet Mum”. Said when you can’t be there yourself.'},
+     {id:'vidimo-se-sutra',bs:'Vidimo se sutra.',en:'See you tomorrow.',say:'VEE-dee-mo seh SOO-tra',note:'Literally “we see each other tomorrow”. You know “sutra” from Unit 6.'},
+     {id:'hvala-ti',bs:'Hvala ti.',en:'Thank you (to you).',say:'HVAH-la tee',note:'Adding “ti” makes it personal, said to one person you know well.'}
    ]}
 ];
-var UNITS=[{n:1,bs:'Pozdravi',en:'Greetings'},{n:2,bs:'Porodica i brojevi',en:'Family and numbers'},{n:3,bs:'Razgovor',en:'Keeping a conversation going'},{n:4,bs:'Za stolom',en:'At the table'},{n:5,bs:'Pitanja',en:'Asking questions'}];
+var UNITS=[{n:1,bs:'Pozdravi',en:'Greetings'},{n:2,bs:'Porodica i brojevi',en:'Family and numbers'},{n:3,bs:'Razgovor',en:'Keeping a conversation going'},{n:4,bs:'Za stolom',en:'At the table'},{n:5,bs:'Pitanja',en:'Asking questions'},{n:6,bs:'Dani i vrijeme',en:'Days and time'},{n:7,bs:'Želim, volim, imam',en:'Wants, likes and having'},{n:8,bs:'U gradu',en:'Out and about'},{n:9,bs:'Svakodnevica',en:'Daily life'},{n:10,bs:'Razgovor s porodicom',en:'Talking with family'}];
 var ITEM={};
 LESSONS.forEach(function(L){ (L.items||[]).forEach(function(it){ it.lesson=L.id; ITEM[it.id]=it; }); });
 
