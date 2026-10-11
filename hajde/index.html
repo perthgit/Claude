@@ -276,7 +276,7 @@ h1,h2,p,ul{margin:0}
 (function(){
 'use strict';
 
-/* ---------- content: Unit 1, standard Bosnian (ijekavian, Latin script) ---------- */
+/* ---------- content: Units 1 to 3, standard Bosnian (ijekavian, Latin script) ---------- */
 var LESSONS=[
   {id:'l1',bs:'Zdravo!',en:'Hello and goodbye',mins:5,
    tip:{title:'The sounds of Bosnian',lead:'Bosnian is spelled the way it sounds, and every letter is pronounced. These six are the ones to learn first.',rows:[
@@ -339,9 +339,28 @@ var LESSONS=[
      {id:'osam',bs:'Osam',en:'Eight (8)',say:'O-sahm',note:'Easy to mix up with “sedam”.'},
      {id:'devet',bs:'Devet',en:'Nine (9)',say:'DEH-veht'},
      {id:'deset',bs:'Deset',en:'Ten (10)',say:'DEH-seht'}
+   ]},
+  {id:'l7',unit:3,bs:'Ne razumijem',en:'When you get stuck',mins:5,
+   items:[
+     {id:'ne-razumijem',bs:'Ne razumijem.',en:'I don’t understand.',say:'neh rah-ZOO-mee-yem',note:'Short, polite and always welcome. People will slow down for you.'},
+     {id:'razumijem',bs:'Razumijem.',en:'I understand.',say:'rah-ZOO-mee-yem',note:'Add “malo” (a little) if it is only partly true: “Razumijem malo.”'},
+     {id:'mozes-li-ponoviti',bs:'Možeš li ponoviti?',en:'Can you repeat that?',say:'MO-zhesh lee po-NO-vee-tee',note:'To someone older or someone you do not know, say “Možete li ponoviti?”.'},
+     {id:'govori-sporije',bs:'Govori sporije, molim te.',en:'Speak more slowly, please.',say:'GO-vo-ree SPO-ree-yeh, MO-leem teh',note:'“Molim te” is the friendly “please”, for family and friends.'},
+     {id:'sta-to-znaci',bs:'Šta to znači?',en:'What does that mean?',say:'shta to ZNAH-chee',note:'“Šta” is “what”. Say the word you heard first, then ask this.'},
+     {id:'kako-se-ovo-kaze',bs:'Kako se ovo kaže?',en:'How do you say this?',say:'KAH-ko seh O-vo KAH-zheh',note:'Point at something and ask. Add “na bosanskom” (in Bosnian) if you like.'}
+   ]},
+  {id:'l8',unit:3,bs:'Učim bosanski',en:'I’m learning Bosnian',mins:5,
+   items:[
+     {id:'ucim-bosanski',bs:'Učim bosanski.',en:'I’m learning Bosnian.',say:'OO-cheem BO-sahn-skee',note:'“Učim” means “I learn” and “I am learning”.'},
+     {id:'govorim-malo-bosanski',bs:'Govorim malo bosanski.',en:'I speak a little Bosnian.',say:'GO-vo-reem MAH-lo BO-sahn-skee',note:'“Malo” means “a little”.'},
+     {id:'ne-znam',bs:'Ne znam.',en:'I don’t know.',say:'neh znahm',note:'“Ne” goes before the verb to make it negative, as in “ne razumijem”.'},
+     {id:'izvini',bs:'Izvini.',en:'Sorry / excuse me.',say:'EEZ-vee-nee',note:'To friends and family. To someone older, or formally, say “Izvinite”.'},
+     {id:'nema-problema',bs:'Nema problema.',en:'No problem.',say:'NEH-ma PRO-ble-ma',note:'You will recognise this one.'},
+     {id:'da',bs:'Da',en:'Yes',say:'dah'},
+     {id:'ne',bs:'Ne',en:'No',say:'neh'}
    ]}
 ];
-var UNITS=[{n:1,bs:'Pozdravi',en:'Greetings'},{n:2,bs:'Porodica i brojevi',en:'Family and numbers'}];
+var UNITS=[{n:1,bs:'Pozdravi',en:'Greetings'},{n:2,bs:'Porodica i brojevi',en:'Family and numbers'},{n:3,bs:'Razgovor',en:'Keeping a conversation going'}];
 var ITEM={};
 LESSONS.forEach(function(L){ (L.items||[]).forEach(function(it){ it.lesson=L.id; ITEM[it.id]=it; }); });
 
