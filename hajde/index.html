@@ -276,7 +276,7 @@ h1,h2,p,ul{margin:0}
 (function(){
 'use strict';
 
-/* ---------- content: Units 1 to 4, standard Bosnian (ijekavian, Latin script) ---------- */
+/* ---------- content: Units 1 to 5, standard Bosnian (ijekavian, Latin script) ---------- */
 var LESSONS=[
   {id:'l1',bs:'Zdravo!',en:'Hello and goodbye',mins:5,
    tip:{title:'The sounds of Bosnian',lead:'Bosnian is spelled the way it sounds, and every letter is pronounced. These six are the ones to learn first.',rows:[
@@ -378,9 +378,28 @@ var LESSONS=[
      {id:'vodu-molim',bs:'Vodu, molim.',en:'Water, please.',say:'VO-doo, MO-leem',note:'“Voda” becomes “vodu” here, the same -a to -u change as in “imam sestru”.'},
      {id:'kafu-molim',bs:'Kafu, molim.',en:'A coffee, please.',say:'KAH-foo, MO-leem',note:'The same change again: “kafa” becomes “kafu”.'},
      {id:'dosta-je-hvala',bs:'Dosta je, hvala.',en:'That’s enough, thanks.',say:'DO-sta yeh, HVAH-la',note:'Handy when family keeps offering you more food.'}
+   ]},
+  {id:'l11',unit:5,bs:'Ko, šta, gdje?',en:'Question words',mins:5,
+   items:[
+     {id:'ko',bs:'Ko?',en:'Who?',say:'koh',note:'Croatian says “tko”. Bosnian drops the “t”.'},
+     {id:'sta',bs:'Šta?',en:'What?',say:'shtah',note:'Croatian says “što”. In Bosnian it is “šta”, with the “š” from škola.'},
+     {id:'gdje',bs:'Gdje?',en:'Where?',say:'GDYEH',note:'Both letters at the start are said: a quick “g” straight into “dyeh”.'},
+     {id:'kada',bs:'Kada?',en:'When?',say:'KAH-da',note:'You will often hear the short form “kad”.'},
+     {id:'zasto',bs:'Zašto?',en:'Why?',say:'ZAHSH-to',note:'The “š” is the same as in “šta”.'},
+     {id:'kako',bs:'Kako?',en:'How?',say:'KAH-ko',note:'The same word you already know from “Kako si?”.'}
+   ]},
+  {id:'l12',unit:5,bs:'Šta je ovo?',en:'Questions in use',mins:6,
+   items:[
+     {id:'sta-je-ovo',bs:'Šta je ovo?',en:'What is this?',say:'shta yeh O-vo',note:'Point and ask. “Ovo” means “this”.'},
+     {id:'ko-je-to',bs:'Ko je to?',en:'Who is that?',say:'ko yeh TO',note:'“To” means “that”.'},
+     {id:'gdje-je-mama',bs:'Gdje je mama?',en:'Where is Mum?',say:'GDYEH yeh MAH-ma',note:'Swap in “tata”, “baka” or “djed”.'},
+     {id:'gdje-je-kupatilo',bs:'Gdje je kupatilo?',en:'Where is the bathroom?',say:'GDYEH yeh KOO-pa-tee-lo',note:'“Kupatilo” is the bathroom. Handy anywhere.'},
+     {id:'sta-radis',bs:'Šta radiš?',en:'What are you doing?',say:'shta RAH-deesh',note:'A very common way to start a chat with family.'},
+     {id:'kako-je-baka',bs:'Kako je baka?',en:'How is Grandma?',say:'KAH-ko yeh BAH-ka',note:'Ask after anyone: “Kako je tata?”, “Kako je brat?”.'},
+     {id:'koliko-kosta',bs:'Koliko košta?',en:'How much does it cost?',say:'KO-lee-ko KOSH-ta',note:'Works in any shop or café.'}
    ]}
 ];
-var UNITS=[{n:1,bs:'Pozdravi',en:'Greetings'},{n:2,bs:'Porodica i brojevi',en:'Family and numbers'},{n:3,bs:'Razgovor',en:'Keeping a conversation going'},{n:4,bs:'Za stolom',en:'At the table'}];
+var UNITS=[{n:1,bs:'Pozdravi',en:'Greetings'},{n:2,bs:'Porodica i brojevi',en:'Family and numbers'},{n:3,bs:'Razgovor',en:'Keeping a conversation going'},{n:4,bs:'Za stolom',en:'At the table'},{n:5,bs:'Pitanja',en:'Asking questions'}];
 var ITEM={};
 LESSONS.forEach(function(L){ (L.items||[]).forEach(function(it){ it.lesson=L.id; ITEM[it.id]=it; }); });
 
