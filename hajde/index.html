@@ -276,7 +276,7 @@ h1,h2,p,ul{margin:0}
 (function(){
 'use strict';
 
-/* ---------- content: Units 1 to 3, standard Bosnian (ijekavian, Latin script) ---------- */
+/* ---------- content: Units 1 to 4, standard Bosnian (ijekavian, Latin script) ---------- */
 var LESSONS=[
   {id:'l1',bs:'Zdravo!',en:'Hello and goodbye',mins:5,
    tip:{title:'The sounds of Bosnian',lead:'Bosnian is spelled the way it sounds, and every letter is pronounced. These six are the ones to learn first.',rows:[
@@ -358,9 +358,29 @@ var LESSONS=[
      {id:'nema-problema',bs:'Nema problema.',en:'No problem.',say:'NEH-ma PRO-ble-ma',note:'You will recognise this one.'},
      {id:'da',bs:'Da',en:'Yes',say:'dah'},
      {id:'ne',bs:'Ne',en:'No',say:'neh'}
+   ]},
+  {id:'l9',unit:4,bs:'Hrana i piće',en:'Food and drink',mins:5,
+   items:[
+     {id:'voda',bs:'Voda',en:'Water',say:'VO-da'},
+     {id:'kafa',bs:'Kafa',en:'Coffee',say:'KAH-fa',note:'Bosnian coffee is a small ritual, served in a little pot called a džezva.'},
+     {id:'caj',bs:'Čaj',en:'Tea',say:'chy',note:'It starts with the “č” from the sound guide. It sounds like English “chai”.'},
+     {id:'sok',bs:'Sok',en:'Juice',say:'sohk'},
+     {id:'mlijeko',bs:'Mlijeko',en:'Milk',say:'MLEE-yeh-ko',note:'Spelled “ije” but said “ee-yeh”. Bosnian keeps this sound where Serbian often says “mleko”.'},
+     {id:'hljeb',bs:'Hljeb',en:'Bread',say:'hlyehb',note:'The Bosnian word for bread. In Croatia you will hear “kruh”.'},
+     {id:'sir',bs:'Sir',en:'Cheese',say:'seer'}
+   ]},
+  {id:'l10',unit:4,bs:'Dobar tek!',en:'Eating together',mins:5,
+   items:[
+     {id:'dobar-tek',bs:'Dobar tek!',en:'Enjoy your meal!',say:'DO-bar tehk',note:'Said before everyone eats. A friendly reply is “Hvala, i tebi” (thanks, you too).'},
+     {id:'ukusno-je',bs:'Ukusno je.',en:'It’s delicious.',say:'OO-koos-no yeh',note:'The best compliment you can give the cook.'},
+     {id:'gladan-sam',bs:'Gladan sam.',en:'I’m hungry.',say:'GLAH-dahn sahm',note:'Women say “gladna sam”. Adjectives change to match the person speaking.'},
+     {id:'zedan-sam',bs:'Žedan sam.',en:'I’m thirsty.',say:'ZHEH-dahn sahm',note:'Women say “žedna sam”.'},
+     {id:'vodu-molim',bs:'Vodu, molim.',en:'Water, please.',say:'VO-doo, MO-leem',note:'“Voda” becomes “vodu” here, the same -a to -u change as in “imam sestru”.'},
+     {id:'kafu-molim',bs:'Kafu, molim.',en:'A coffee, please.',say:'KAH-foo, MO-leem',note:'The same change again: “kafa” becomes “kafu”.'},
+     {id:'dosta-je-hvala',bs:'Dosta je, hvala.',en:'That’s enough, thanks.',say:'DO-sta yeh, HVAH-la',note:'Handy when family keeps offering you more food.'}
    ]}
 ];
-var UNITS=[{n:1,bs:'Pozdravi',en:'Greetings'},{n:2,bs:'Porodica i brojevi',en:'Family and numbers'},{n:3,bs:'Razgovor',en:'Keeping a conversation going'}];
+var UNITS=[{n:1,bs:'Pozdravi',en:'Greetings'},{n:2,bs:'Porodica i brojevi',en:'Family and numbers'},{n:3,bs:'Razgovor',en:'Keeping a conversation going'},{n:4,bs:'Za stolom',en:'At the table'}];
 var ITEM={};
 LESSONS.forEach(function(L){ (L.items||[]).forEach(function(it){ it.lesson=L.id; ITEM[it.id]=it; }); });
 
