@@ -276,7 +276,7 @@ h1,h2,p,ul{margin:0}
 (function(){
 'use strict';
 
-/* ---------- content: Units 1 to 10, standard Bosnian (ijekavian, Latin script) ---------- */
+/* ---------- content: Units 1 to 15, standard Bosnian (ijekavian, Latin script) ---------- */
 var LESSONS=[
   {id:'l1',bs:'Zdravo!',en:'Hello and goodbye',mins:5,
    tip:{title:'The sounds of Bosnian',lead:'Bosnian is spelled the way it sounds, and every letter is pronounced. These six are the ones to learn first.',rows:[
@@ -494,9 +494,104 @@ var LESSONS=[
      {id:'pozdravi-mamu',bs:'Pozdravi mamu.',en:'Say hello to Mum.',say:'POZ-dra-vee MAH-moo',note:'Literally “greet Mum”. Said when you can’t be there yourself.'},
      {id:'vidimo-se-sutra',bs:'Vidimo se sutra.',en:'See you tomorrow.',say:'VEE-dee-mo seh SOO-tra',note:'Literally “we see each other tomorrow”. You know “sutra” from Unit 6.'},
      {id:'hvala-ti',bs:'Hvala ti.',en:'Thank you (to you).',say:'HVAH-la tee',note:'Adding “ti” makes it personal, said to one person you know well.'}
+   ]},
+  {id:'l23',unit:11,bs:'Koliko je sati?',en:'Telling the time',mins:6,
+   items:[
+     {id:'koliko-je-sati',bs:'Koliko je sati?',en:'What time is it?',say:'KO-lee-ko yeh SAH-tee',note:'Literally “how many hours is it”. “Sati” means “hours” and also “o’clock”.'},
+     {id:'sada-je-tri-sata',bs:'Sada je tri sata.',en:'It’s three o’clock.',say:'SAH-da yeh tree SAH-ta',note:'After two, three and four, say “sata”. From five upwards it is “sati”.'},
+     {id:'sada-je-pet-sati',bs:'Sada je pet sati.',en:'It’s five o’clock.',say:'SAH-da yeh peht SAH-tee',note:'From five upwards the word is “sati”. Swap in a bigger number: “Sada je osam sati.”'},
+     {id:'pola-pet',bs:'Pola pet.',en:'Half past four.',say:'PO-la peht',note:'A classic trap: it is half way to five, so “pola pet” means 4:30, not 5:30.'},
+     {id:'podne',bs:'Podne',en:'Noon',say:'POD-neh',note:'The middle of the day. “Prijepodne” is the morning and “poslijepodne” is the afternoon.'},
+     {id:'ponoc',bs:'Ponoć',en:'Midnight',say:'PO-noch',note:'Built from “noć” (night), the word in “laku noć”. The final “ć” is a soft “ch”.'},
+     {id:'u-koliko-sati',bs:'U koliko sati?',en:'At what time?',say:'oo KO-lee-ko SAH-tee',note:'Use it for plans: “U koliko sati dolaziš?” is “What time are you coming?”.'}
+   ]},
+  {id:'l24',unit:11,bs:'Dolazim u pet',en:'Making plans',mins:6,
+   items:[
+     {id:'dolazim-u-pet',bs:'Dolazim u pet.',en:'I’m coming at five.',say:'DO-la-zeem oo peht',note:'“Dolazim” means “I come” or “I’m arriving”. “U pet” is “at five”, with no word for “o’clock”.'},
+     {id:'cekam-te',bs:'Čekam te.',en:'I’m waiting for you.',say:'CHEH-kam teh',note:'The same “te” (you) as in “Volim te”.'},
+     {id:'kasnim',bs:'Kasnim.',en:'I’m running late.',say:'KAHS-neem',note:'Literally “I’m late”. Men and women say it the same way.'},
+     {id:'kad-dolazis',bs:'Kad dolaziš?',en:'When are you coming?',say:'kahd DO-la-zeesh',note:'“Kad” means “when”. “Dolaziš” is the “you” form of “dolazim”.'},
+     {id:'ne-mogu-danas',bs:'Ne mogu danas.',en:'I can’t today.',say:'neh MO-goo DAH-nas',note:'“Mogu” means “I can”, as in “Mogu li dobiti vodu?”. Put “ne” in front to say no.'},
+     {id:'vidimo-se-poslije',bs:'Vidimo se poslije.',en:'See you later.',say:'VEE-dee-mo seh PO-slee-yeh',note:'The same pattern as “Vidimo se sutra”. “Poslije” means “later” or “after”.'}
+   ]},
+  {id:'l25',unit:12,bs:'Bio sam…',en:'Saying what you did',mins:6,
+   items:[
+     {id:'bio-sam-kod-kuce',bs:'Bio sam kod kuće.',en:'I was at home.',say:'BEE-o sahm kod KOO-cheh',note:'“Bio sam” means “I was”. Women say “bila sam”. “Kod kuće” is “at home”.'},
+     {id:'bio-sam-na-poslu',bs:'Bio sam na poslu.',en:'I was at work.',say:'BEE-o sahm na PO-sloo',note:'Going to work is “na posao”, but being at work is “na poslu”.'},
+     {id:'radio-sam',bs:'Radio sam.',en:'I worked.',say:'RAH-dee-o sahm',note:'“Radim” (I work) becomes “radio sam” (I worked). Women say “radila sam”.'},
+     {id:'jeo-sam-rucak',bs:'Jeo sam ručak.',en:'I ate lunch.',say:'YEH-o sahm ROO-chak',note:'“Jeo” is the past of “jesti”, to eat. Women say “jela sam”.'},
+     {id:'gledao-sam-film',bs:'Gledao sam film.',en:'I watched a film.',say:'GLEH-da-o sahm feelm',note:'From “gledam”. Women say “gledala sam”.'},
+     {id:'citao-sam-knjigu',bs:'Čitao sam knjigu.',en:'I read a book.',say:'CHEE-ta-o sahm KNYEE-goo',note:'From “čitam”. Women say “čitala sam”.'},
+     {id:'spavao-sam',bs:'Spavao sam.',en:'I slept.',say:'SPAH-va-o sahm',note:'From “spavati”, to sleep. Women say “spavala sam”.'}
+   ]},
+  {id:'l26',unit:12,bs:'Šta si radio jučer?',en:'Asking about yesterday',mins:6,
+   items:[
+     {id:'sta-si-radio-jucer',bs:'Šta si radio jučer?',en:'What did you do yesterday?',say:'shta see RAH-dee-o YOO-cher',note:'Asking a woman? Say “radila”: “Šta si radila jučer?”.'},
+     {id:'jucer-sam-bio-kod-bake',bs:'Jučer sam bio kod bake.',en:'Yesterday I was at Grandma’s.',say:'YOO-cher sahm BEE-o kod BAH-keh',note:'“Kod bake” means “at Grandma’s place”. “Baka” becomes “bake” after “kod”.'},
+     {id:'nisam-znao',bs:'Nisam znao.',en:'I didn’t know.',say:'NEE-sahm ZNAH-o',note:'“Nisam” is “ne” and “sam” joined together. Women say “nisam znala”.'},
+     {id:'nisam-razumio',bs:'Nisam razumio.',en:'I didn’t understand.',say:'NEE-sahm rah-ZOO-mee-o',note:'The past of “razumijem”. Women say “nisam razumjela”.'},
+     {id:'sta-si-jeo',bs:'Šta si jeo?',en:'What did you eat?',say:'shta see YEH-o',note:'The same pattern as “Šta si radio?”. Asking a woman: “Šta si jela?”.'},
+     {id:'jesi-li-dobro-spavao',bs:'Jesi li dobro spavao?',en:'Did you sleep well?',say:'YEH-see lee DO-bro SPAH-va-o',note:'Like “Je li daleko?”, the “li” makes it a yes or no question. Asking a woman: “spavala”.'}
+   ]},
+  {id:'l27',unit:13,bs:'Kakvo je vrijeme?',en:'The weather',mins:6,
+   items:[
+     {id:'kakvo-je-vrijeme',bs:'Kakvo je vrijeme?',en:'What’s the weather like?',say:'KAHK-vo yeh VREE-yeh-meh',note:'“Vrijeme” means both “weather” and “time”. The situation tells you which.'},
+     {id:'toplo-je',bs:'Toplo je.',en:'It’s warm.',say:'TOP-lo yeh',note:'Weather words end in “-o”: toplo, hladno, vruće.'},
+     {id:'hladno-je',bs:'Hladno je.',en:'It’s cold.',say:'HLAHD-no yeh',note:'The opposite of “toplo je”. Add “jako” (very) to stress it: “Jako je hladno.”'},
+     {id:'vruce-je',bs:'Vruće je.',en:'It’s hot.',say:'VROO-cheh yeh',note:'The “ć” is a soft “ch”. “Vruće” is hotter than “toplo”.'},
+     {id:'suncano-je',bs:'Sunčano je.',en:'It’s sunny.',say:'SOON-cha-no yeh',note:'From “sunce”, the sun.'},
+     {id:'pada-kisa',bs:'Pada kiša.',en:'It’s raining.',say:'PAH-da KEE-sha',note:'Literally “rain is falling”. “Padati” means “to fall”.'},
+     {id:'pada-snijeg',bs:'Pada snijeg.',en:'It’s snowing.',say:'PAH-da SNEE-yeg',note:'Literally “snow is falling”. The “ije” in “snijeg” is said “ee-yeh”, as in “srijeda”.'}
+   ]},
+  {id:'l28',unit:13,bs:'Godišnja doba',en:'The seasons',mins:6,
+   items:[
+     {id:'proljece',bs:'Proljeće',en:'Spring',say:'PRO-lyeh-cheh',note:'The “lj” is the same soft sound as in “ljut”.'},
+     {id:'ljeto',bs:'Ljeto',en:'Summer',say:'LYEH-to',note:'Serbian says “leto”. In Bosnian it is “ljeto”.'},
+     {id:'jesen',bs:'Jesen',en:'Autumn',say:'YEH-sen',note:'It starts with the “j” from “jutro”, said like an English “y”.'},
+     {id:'zima',bs:'Zima',en:'Winter',say:'ZEE-ma',note:'The same word gives “zimi”, meaning “in winter”.'},
+     {id:'ljeti-je-vruce',bs:'Ljeti je vruće.',en:'In summer it’s hot.',say:'LYEH-tee yeh VROO-cheh',note:'“Ljeto” becomes “ljeti” to mean “in summer”.'},
+     {id:'zimi-je-hladno',bs:'Zimi je hladno.',en:'In winter it’s cold.',say:'ZEE-mee yeh HLAHD-no',note:'The same trick: “zima” becomes “zimi” for “in winter”.'}
+   ]},
+  {id:'l29',unit:14,bs:'Kakav je?',en:'Describing people and things',mins:6,
+   items:[
+     {id:'moj-brat-je-visok',bs:'Moj brat je visok.',en:'My brother is tall.',say:'moy braht yeh VEE-sok',note:'A masculine word takes a describing word ending in a consonant: “visok”. “Moj” is the masculine “my”.'},
+     {id:'moja-sestra-je-visoka',bs:'Moja sestra je visoka.',en:'My sister is tall.',say:'MO-ya SEH-stra yeh VEE-so-ka',note:'A feminine word takes “-a”: “visoka”. “Moja” is the feminine “my”.'},
+     {id:'djed-je-star',bs:'Djed je star.',en:'Grandpa is old.',say:'dyed yeh stahr',note:'The same “dje” spelling as in “nedjelja”. “Star” means old.'},
+     {id:'baka-je-dobra',bs:'Baka je dobra.',en:'Grandma is kind.',say:'BAH-ka yeh DO-bra',note:'“Dobra” means good or kind, and ends in “-a” for a woman. You know “dobar” from “Dobar dan”.'},
+     {id:'kuca-je-velika',bs:'Kuća je velika.',en:'The house is big.',say:'KOO-cha yeh VEH-lee-ka',note:'“Kuća” is a feminine word, so the describing word ends in “-a”.'},
+     {id:'grad-je-mali',bs:'Grad je mali.',en:'The town is small.',say:'grahd yeh MAH-lee',note:'A masculine word takes “mali”. The feminine is “mala”: “Kuća je mala.”'},
+     {id:'selo-je-lijepo',bs:'Selo je lijepo.',en:'The village is beautiful.',say:'SEH-lo yeh LEE-yeh-po',note:'“Selo” ends in “-o” and is neuter, so the describing word ends in “-o” too: “lijepo”.'}
+   ]},
+  {id:'l30',unit:14,bs:'Boje',en:'Colours',mins:6,
+   items:[
+     {id:'auto-je-crven',bs:'Auto je crven.',en:'The car is red.',say:'OW-to yeh TSR-ven',note:'Despite the “-o”, “auto” is masculine, so it is “crven” and not “crveno”.'},
+     {id:'more-je-plavo',bs:'More je plavo.',en:'The sea is blue.',say:'MO-reh yeh PLAH-vo',note:'“More” (sea) is neuter, so the colour ends in “-o”: “plavo”.'},
+     {id:'trava-je-zelena',bs:'Trava je zelena.',en:'The grass is green.',say:'TRAH-va yeh ZEH-leh-na',note:'“Trava” is feminine, so the colour ends in “-a”: “zelena”.'},
+     {id:'sunce-je-zuto',bs:'Sunce je žuto.',en:'The sun is yellow.',say:'SOON-tseh yeh ZHOO-to',note:'You met “sunce” in “Sunčano je”. It is neuter, so “žuto”.'},
+     {id:'macka-je-crna',bs:'Mačka je crna.',en:'The cat is black.',say:'MAH-chka yeh TSR-na',note:'It has the “č” from “čaj”. “Mačka” is feminine, so “crna”.'},
+     {id:'snijeg-je-bijel',bs:'Snijeg je bijel.',en:'Snow is white.',say:'SNEE-yeg yeh BEE-yel',note:'“Snijeg” is masculine, so “bijel”. The feminine is “bijela” and the neuter “bijelo”.'}
+   ]},
+  {id:'l31',unit:15,bs:'Halo?',en:'On the phone',mins:6,
+   items:[
+     {id:'halo',bs:'Halo?',en:'Hello? (on the phone)',say:'HAH-lo',note:'Said when you pick up a call. Face to face, use “Zdravo”.'},
+     {id:'ko-je-na-telefonu',bs:'Ko je na telefonu?',en:'Who is on the phone?',say:'ko yeh na TEH-leh-fo-noo',note:'“Ko” means “who”. “Telefon” becomes “telefonu” after “na”.'},
+     {id:'ne-cujem-te',bs:'Ne čujem te.',en:'I can’t hear you.',say:'neh CHOO-yem teh',note:'“Čujem” means “I hear”. The same pattern as “ne znam”: “ne” goes before the verb.'},
+     {id:'govori-glasnije',bs:'Govori glasnije.',en:'Speak louder.',say:'GO-vo-ree GLAHS-nee-yeh',note:'The command form of “govoriti”, to speak. “Glasno” is loud, “glasnije” is louder.'},
+     {id:'nazovi-me',bs:'Nazovi me.',en:'Call me.',say:'NAH-zo-vee meh',note:'“Me” means “me”, the partner of “te” (you). “Nazovi” is a command.'},
+     {id:'zovem-te-poslije',bs:'Zovem te poslije.',en:'I’ll call you later.',say:'ZO-vem teh PO-slee-yeh',note:'Literally “I call you later”. Bosnian often uses the present tense for the near future.'},
+     {id:'cujemo-se',bs:'Čujemo se.',en:'Talk soon.',say:'CHOO-ye-mo seh',note:'Literally “we hear each other”, like “vidimo se” but for phone calls.'}
+   ]},
+  {id:'l32',unit:15,bs:'Šta ima novo?',en:'Catching up',mins:6,
+   items:[
+     {id:'sta-ima-novo',bs:'Šta ima novo?',en:'What’s new?',say:'shta EE-ma NO-vo',note:'A friendly opener, literally “what is there new”. Very common among family and friends.'},
+     {id:'nista-posebno',bs:'Ništa posebno.',en:'Nothing special.',say:'NEESH-ta PO-seh-bno',note:'The usual reply to “Šta ima novo?”. “Posebno” means “special”.'},
+     {id:'kako-je-na-poslu',bs:'Kako je na poslu?',en:'How is work?',say:'KAH-ko yeh na PO-sloo',note:'You know “na poslu” (at work) from Unit 12.'},
+     {id:'kako-je-porodica',bs:'Kako je porodica?',en:'How is the family?',say:'KAH-ko yeh po-RO-dee-tsa',note:'Asked at the start of most calls with relatives. Add a name instead: “Kako je mama?”.'},
+     {id:'sve-je-u-redu',bs:'Sve je u redu.',en:'Everything is fine.',say:'sveh yeh oo REH-doo',note:'Literally “everything is in order”. “Sve” means “everything”.'},
+     {id:'javi-se',bs:'Javi se.',en:'Get in touch.',say:'YAH-vee seh',note:'Said as you part, meaning “let me hear from you”. It is a command, from “javiti se”.'}
    ]}
 ];
-var UNITS=[{n:1,bs:'Pozdravi',en:'Greetings'},{n:2,bs:'Porodica i brojevi',en:'Family and numbers'},{n:3,bs:'Razgovor',en:'Keeping a conversation going'},{n:4,bs:'Za stolom',en:'At the table'},{n:5,bs:'Pitanja',en:'Asking questions'},{n:6,bs:'Dani i vrijeme',en:'Days and time'},{n:7,bs:'Želim, volim, imam',en:'Wants, likes and having'},{n:8,bs:'U gradu',en:'Out and about'},{n:9,bs:'Svakodnevica',en:'Daily life'},{n:10,bs:'Razgovor s porodicom',en:'Talking with family'}];
+var UNITS=[{n:1,bs:'Pozdravi',en:'Greetings'},{n:2,bs:'Porodica i brojevi',en:'Family and numbers'},{n:3,bs:'Razgovor',en:'Keeping a conversation going'},{n:4,bs:'Za stolom',en:'At the table'},{n:5,bs:'Pitanja',en:'Asking questions'},{n:6,bs:'Dani i vrijeme',en:'Days and time'},{n:7,bs:'Želim, volim, imam',en:'Wants, likes and having'},{n:8,bs:'U gradu',en:'Out and about'},{n:9,bs:'Svakodnevica',en:'Daily life'},{n:10,bs:'Razgovor s porodicom',en:'Talking with family'},{n:11,bs:'Sati i dogovori',en:'Clock time and plans'},{n:12,bs:'Jučer',en:'The past'},{n:13,bs:'Vrijeme',en:'Weather and seasons'},{n:14,bs:'Opisi',en:'Describing people and things'},{n:15,bs:'Telefon',en:'Phone calls and catching up'}];
 var ITEM={};
 LESSONS.forEach(function(L){ (L.items||[]).forEach(function(it){ it.lesson=L.id; ITEM[it.id]=it; }); });
 
